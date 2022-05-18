@@ -33,36 +33,45 @@ def test_determine_sequence_edits():
                           "CAGTAAATCCCATGACACAGACAGAATCAGCGATTCTGGCGCACGCCCGGCGATGTGCGCCAGCGGAGTCGTGCGGCTTCGTGGTAAGCACGCCGGAGGGGGAAAGATATTTC"\
                           "CCCTGCGTGAATATCTCC"
 
+    # 2 edits GG to TT at position 2, 3
+    two_edits_sequence = "CAGCCAACGTCCGATATCACGAAGGATAAATGCAGCAAATGCCTGAGCGGTTGTAAGTTCCGCAATAACGTCTTCAACTTTGGCGGCTTCCTTTCCATTAACAAACTTTCG"\
+                  "CAGTAAATCCCATGACACAGACAGAATCAGCGATTCTGGCGCACGCCCGGCGATGTGCGCCAGCGGAGTCGTGCGGCTTCGTGGTAAGCACGCCGGAGGGGGAAAGATATTTC"\
+                  "CCCTGCGTGAATATCTCC"
+
 
     wt_output = determine_sequence_edits(read=WT_sequence, L_fuzzy_search="TGTAAGTTCCGCAATAACGT", 
                                          R_fuzzy_search="CGATGTGCGCCAGCGGAGTC", L_to_R_length=90,
-                                         edit_position=45, fuzziness=1)
+                                         edit_position_array=[45], fuzziness=1)
 
     edit_output = determine_sequence_edits(read=edit_sequence, L_fuzzy_search="TGTAAGTTCCGCAATAACGT", 
                                            R_fuzzy_search="CGATGTGCGCCAGCGGAGTC", L_to_R_length=90,
-                                           edit_position=45, fuzziness=1)
+                                           edit_position_array=[45], fuzziness=1)
 
     off_target_output = determine_sequence_edits(read=off_target_sequence, L_fuzzy_search="TGTAAGTTCCGCAATAACGT", 
                                                    R_fuzzy_search="CGATGTGCGCCAGCGGAGTC", L_to_R_length=90,
-                                                   edit_position=45, fuzziness=1)
+                                                   edit_position_array=[45], fuzziness=1)
 
     deletion_output = determine_sequence_edits(read=deletion_sequence, L_fuzzy_search="TGTAAGTTCCGCAATAACGT", 
                                                  R_fuzzy_search="CGATGTGCGCCAGCGGAGTC", L_to_R_length=90,
-                                                 edit_position=45, fuzziness=1)
+                                                 edit_position_array=[45], fuzziness=1)
 
     edit_2_output = determine_sequence_edits(read=edit_2_sequence, L_fuzzy_search="TGTAAGTTCCGCAATAACGT", 
                                                R_fuzzy_search="CGATGTGCGCCAGCGGAGTC", L_to_R_length=90,
-                                               edit_position=3, fuzziness=1)
+                                               edit_position_array=[3], fuzziness=1)
 
     too_fuzzed_output = determine_sequence_edits(read=too_fuzzed_sequence, L_fuzzy_search="TGTAAGTTCCGCAATAACGT", 
                                                    R_fuzzy_search="CGATGTGCGCCAGCGGAGTC", L_to_R_length=90,
-                                                   edit_position=45, fuzziness=1)
+                                                   edit_position_array=[45], fuzziness=1)
+
+    two_edits_output = determine_sequence_edits(read=two_edits_sequence, L_fuzzy_search="TGTAAGTTCCGCAATAACGT", 
+                                                   R_fuzzy_search="CGATGTGCGCCAGCGGAGTC", L_to_R_length=90,
+                                                   edit_position_array=[2, 3], fuzziness=1)
 
 
-
-    assert wt_output == {"does_it_map": True, "correct_length": True, "nt_at_edit_pos": "A"}
-    assert edit_output == {"does_it_map": True, "correct_length": True, "nt_at_edit_pos": "G"}
+    assert wt_output == {"does_it_map": True, "correct_length": True, "nt_at_edit_pos": ["A"]}
+    assert edit_output == {"does_it_map": True, "correct_length": True, "nt_at_edit_pos": ["G"]}
     assert off_target_output == {"does_it_map": False, "correct_length": False, "nt_at_edit_pos": "N"}
     assert deletion_output == {"does_it_map": True, "correct_length": False, "nt_at_edit_pos": "N"}
-    assert edit_2_output == {"does_it_map": True, "correct_length": True, "nt_at_edit_pos": "A"}
+    assert edit_2_output == {"does_it_map": True, "correct_length": True, "nt_at_edit_pos": ["A"]}
     assert too_fuzzed_output == {"does_it_map": False, "correct_length": False, "nt_at_edit_pos": "N"}
+    assert two_edits_output == {"does_it_map": True, "correct_length": True, "nt_at_edit_pos": ["T", "T"]}
