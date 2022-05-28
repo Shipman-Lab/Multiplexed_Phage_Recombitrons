@@ -77,7 +77,8 @@ def determine_sequence_edits(read, L_fuzzy_search_out, R_fuzzy_search_out, edits
             if does_it_map_around_edit == True: 
                 edit_nucleotide = zoom_read[L_fuzzy_match_in[0].end:R_fuzzy_match_in[0].start]
                 does_it_map_around_edit_dict[edit] = True
-                nt_at_edit_pos_dict[edit] = edit_nucleotide
+                if len(edit_nucleotide) == 1:
+                    nt_at_edit_pos_dict[edit] = edit_nucleotide
         return {"does_it_map": does_it_map,
                 "does_it_map_around_edit": does_it_map_around_edit_dict,
                 "nt_at_edit_pos_dict": nt_at_edit_pos_dict}
