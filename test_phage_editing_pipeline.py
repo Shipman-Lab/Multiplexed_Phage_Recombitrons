@@ -66,25 +66,25 @@ def test_determine_sequence_edits():
                                                R_fuzzy_search_out="CGATGTGCGCCAGCGGAGTC", edits_dict=dict1,
                                                fuzziness=1)
 
-    # import pdb
-    # pdb.set_trace()
     edit_2_output = determine_sequence_edits(read=edit_2_sequence, L_fuzzy_search_out="GAGCGGTTGTAAGTTCCG", 
                                              R_fuzzy_search_out="CGATGTGCGCCAGCGGAGTC", edits_dict=dict2,
                                              fuzziness=1)
 
-    # too_fuzzed_output = determine_sequence_edits(read=too_fuzzed_sequence, L_fuzzy_search_out="TGTAAGTTCCGCAATAACGT", 
-    #                                              R_fuzzy_search_out="CGATGTGCGCCAGCGGAGTC", edits_dict=dict1,
-    #                                              fuzziness=1)
+    too_fuzzed_output = determine_sequence_edits(read=too_fuzzed_sequence, L_fuzzy_search_out="TGTAAGTTCCGCAATAACGT", 
+                                                 R_fuzzy_search_out="CGATGTGCGCCAGCGGAGTC", edits_dict=dict1,
+                                                 fuzziness=1)
 
     two_edits_output = determine_sequence_edits(read=two_edits_sequence, L_fuzzy_search_out="CCTGAGCGGTTGTAAGTTCC", 
                                                 R_fuzzy_search_out="CGATGTGCGCCAGCGGAGTC", edits_dict=dict3,
                                                 fuzziness=1)
-    assert two_edits_output == {"does_it_map": True, "does_it_map_around_edit": {"G1T": True, "G2T": True},
-                                "nt_at_edit_pos_dict": {"G1T": "T", "G2T": "T"}}
+
     assert wt_output == {"does_it_map": True, "does_it_map_around_edit": {"A44G": True}, "nt_at_edit_pos_dict": {"A44G": "A"}}
     assert edit_output == {"does_it_map": True, "does_it_map_around_edit": {"A44G": True}, "nt_at_edit_pos_dict": {"A44G": "G"}}
     assert off_target_output == {"does_it_map": False, "does_it_map_around_edit": {"A44G": False}, "nt_at_edit_pos_dict": {"A44G": "N"}}
     assert deletion_output == {"does_it_map": True, "does_it_map_around_edit": {"A44G": False}, "nt_at_edit_pos_dict": {"A44G": "N"}}
     assert edit_2_output == {"does_it_map": True, "does_it_map_around_edit": {"G2A": True}, "nt_at_edit_pos_dict": {"G2A": "A"}}
-    # assert too_fuzzed_output == {"does_it_map": False, "does_it_map_around_edit": True, "nt_at_edit_pos_dict": "N"}
+    assert too_fuzzed_output == {"does_it_map": False, "does_it_map_around_edit": {"A44G": False}, "nt_at_edit_pos_dict": {"A44G": "N"}}
+    assert two_edits_output == {"does_it_map": True, "does_it_map_around_edit": {"G1T": True, "G2T": True},
+                                "nt_at_edit_pos_dict": {"G1T": "T", "G2T": "T"}}
+
 
