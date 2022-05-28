@@ -38,34 +38,38 @@ def test_determine_sequence_edits():
                   "CAGTAAATCCCATGACACAGACAGAATCAGCGATTCTGGCGCACGCCCGGCGATGTGCGCCAGCGGAGTCGTGCGGCTTCGTGGTAAGCACGCCGGAGGGGGAAAGATATTTC"\
                   "CCCTGCGTGAATATCTCC"
 
-
-    wt_output = determine_sequence_edits(read=WT_sequence, L_fuzzy_search_out="TGTAAGTTCCGCAATAACGT", 
-                                         R_fuzzy_search_out="CGATGTGCGCCAGCGGAGTC", dict1, fuzziness=1)
-
-    edit_output = determine_sequence_edits(read=edit_sequence, L_fuzzy_search_out="TGTAAGTTCCGCAATAACGT", 
-                                           R_fuzzy_search_out="CGATGTGCGCCAGCGGAGTC", dict1, fuzziness=1)
-
-    off_target_output = determine_sequence_edits(read=off_target_sequence, L_fuzzy_search_out="TGTAAGTTCCGCAATAACGT", 
-                                                 R_fuzzy_search_out="CGATGTGCGCCAGCGGAGTC", dict1, fuzziness=1)
-
-    deletion_output = determine_sequence_edits(read=deletion_sequence, L_fuzzy_search_out="TGTAAGTTCCGCAATAACGT", 
-                                               R_fuzzy_search_out="CGATGTGCGCCAGCGGAGTC", dict1, fuzziness=1)
-
-    edit_2_output = determine_sequence_edits(read=edit_2_sequence, L_fuzzy_search_out="TGTAAGTTCCGCAATAACGT", 
-                                             R_fuzzy_search_out="CGATGTGCGCCAGCGGAGTC", dict2, fuzziness=1)
-
-    too_fuzzed_output = determine_sequence_edits(read=too_fuzzed_sequence, L_fuzzy_search_out="TGTAAGTTCCGCAATAACGT", 
-                                                 R_fuzzy_search_out="CGATGTGCGCCAGCGGAGTC", dict1, fuzziness=1)
-
-    two_edits_output = determine_sequence_edits(read=two_edits_sequence, L_fuzzy_search_out="TGTAAGTTCCGCAATAACGT", 
-                                                R_fuzzy_search_out="CGATGTGCGCCAGCGGAGTC", dict3, fuzziness=1)
-    ##how to adjust test for 2 edits without making dictionary 
-
-    dict_one = {"A44G": {"L_fuzzy_inside": "CTTTCGCAGT", "R_fuzzy_inside": "AATCCCATGA"}}
-    dict_two = {"G2A": {"L_fuzzy_inside": "CAATAACGTC", "R_fuzzy_inside": "CAACTTTGGC"}}
-    dict_three = {"G1T": {"L_fuzzy_inside": "CAATAACGTC", "R_fuzzy_inside": "NCAACTTTGG",
+    dict1 = {"A44G": {"L_fuzzy_inside": "CTTTCGCAGT", "R_fuzzy_inside": "AATCCCATGA"}}
+    dict2 = {"G2A": {"L_fuzzy_inside": "CAATAACGTC", "R_fuzzy_inside": "CAACTTTGGC"}}
+    dict3 = {"G1T": {"L_fuzzy_inside": "CAATAACGTC", "R_fuzzy_inside": "NCAACTTTGG",
              "G2T": {"L_fuzzy_inside": "AATAACGTCN", "R_fuzzy_inside": "CAACTTTGGC"}} 
 
+    wt_output = determine_sequence_edits(read=WT_sequence, L_fuzzy_search_out="TGTAAGTTCCGCAATAACGT", 
+                                         R_fuzzy_search_out="CGATGTGCGCCAGCGGAGTC", edits_dict=dict1,
+                                         fuzziness=1)
+
+    edit_output = determine_sequence_edits(read=edit_sequence, L_fuzzy_search_out="TGTAAGTTCCGCAATAACGT", 
+                                           R_fuzzy_search_out="CGATGTGCGCCAGCGGAGTC", edits_dict=dict1,
+                                           fuzziness=1)
+
+    off_target_output = determine_sequence_edits(read=off_target_sequence, L_fuzzy_search_out="TGTAAGTTCCGCAATAACGT", 
+                                                 R_fuzzy_search_out="CGATGTGCGCCAGCGGAGTC", edits_dict=dict1,
+                                                 fuzziness=1)
+
+    deletion_output = determine_sequence_edits(read=deletion_sequence, L_fuzzy_search_out="TGTAAGTTCCGCAATAACGT", 
+                                               R_fuzzy_search_out="CGATGTGCGCCAGCGGAGTC", edits_dict=dict1,
+                                               fuzziness=1)
+
+    edit_2_output = determine_sequence_edits(read=edit_2_sequence, L_fuzzy_search_out="TGTAAGTTCCGCAATAACGT", 
+                                             R_fuzzy_search_out="CGATGTGCGCCAGCGGAGTC", edits_dict=dict2,
+                                             fuzziness=1)
+
+    too_fuzzed_output = determine_sequence_edits(read=too_fuzzed_sequence, L_fuzzy_search_out="TGTAAGTTCCGCAATAACGT", 
+                                                 R_fuzzy_search_out="CGATGTGCGCCAGCGGAGTC", edits_dict=dict1,
+                                                 fuzziness=1)
+
+    two_edits_output = determine_sequence_edits(read=two_edits_sequence, L_fuzzy_search_out="TGTAAGTTCCGCAATAACGT", 
+                                                R_fuzzy_search_out="CGATGTGCGCCAGCGGAGTC", edits_dict=dict3,
+                                                fuzziness=1)
 
     assert wt_output == {"does_it_map": True, "does_it_map_around_edit": True, "nt_at_edit_pos": nt_dict}
     assert edit_output == {"does_it_map": True, "does_it_map_around_edit": True, "nt_at_edit_pos": ["G"]}

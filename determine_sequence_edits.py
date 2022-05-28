@@ -1,17 +1,27 @@
 from Bio import SeqIO
 import fuzzysearch
 
-def determine_sequence_edits(read, L_fuzzy_search_out, R_fuzzy_search_out, L_fuzzy_search_in, R_fuzzy_search_in, fuzziness=1):
+def determine_sequence_edits(read, L_fuzzy_search_out, R_fuzzy_search_out, edits_dict, fuzziness=1):
     """
     This function determines whether the reads map to a 
     region of interest out of the donor, if they make to a certain region of interest in the donor, 
     and if there is an edit at a certain base position within that region.
     It can look for multiple edits at once. 
 
-    Inputs: Read is a single read, L/R_fuzzy_search_out 18 bases just outside the donor, 
-    L/R_fuzzy_search_in are 10 bases in the donor (the first and last edit have fuzzies that extend 
-    a few bases off the donor, since they are too close to the end) surrounding each edit,
-    fuzziness is how many differences from the WT sequence are allowed.
+    Inputs:
+    read:                       a single read (as a Seq object)
+    L/R_fuzzy_search_out:       a search string outside of the edit
+                                (current use: 18 bases just outside the donor on phage genome)
+                                L/R_fuzzy_search_in are 10 bases in the donor
+                                (the first and last edit have fuzzies that extend 
+                                a few bases off the donor, since they are too close to the end)
+                                surrounding each edit
+    fuzziness:                  how many differences from the WT sequence are allowed.
+    edits_dict:                 a dictionary where the key is the edit named (ex. A4T) and the value is
+                                an internally nested dictionary with two key:value pairs: a left flanking
+                                search L_fuzzy_inside (right next to the edit) and a right flanking search
+                                R_fuzzy_inside (just to the right of the edit)
+                                the edited nucleotide is BETWEEN these two search strings
   
 
     Outputs: does_it_map is true if the L_fuzzy_search_out and R_fuzzy_search_out each have 1 match (add up to 2)
