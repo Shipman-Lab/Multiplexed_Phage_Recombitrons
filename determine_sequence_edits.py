@@ -62,7 +62,6 @@ def determine_sequence_edits(read, L_fuzzy_search_out, R_fuzzy_search_out, edits
 
         ##maybe this next part goes in the wrapper? 
         #values populated by "edits" dictionary 
-        
         for edit in edits_dict.keys():
             L_fuzzy_inside = edits_dict[edit]["L_fuzzy_inside"] 
             R_fuzzy_inside = edits_dict[edit]["R_fuzzy_inside"] 
@@ -70,23 +69,14 @@ def determine_sequence_edits(read, L_fuzzy_search_out, R_fuzzy_search_out, edits
             L_fuzzy_match_in = fuzzysearch.find_near_matches(L_fuzzy_inside, zoom_read, max_l_dist=fuzziness)
             R_fuzzy_match_in = fuzzysearch.find_near_matches(R_fuzzy_inside, zoom_read, max_l_dist=fuzziness)
 
-
             does_it_map_around_edit = ((len(L_fuzzy_match_in) == 1) & (len(R_fuzzy_match_in) == 1))
 
             if does_it_map_around_edit == True:  
-                chopped_read = read[L_fuzzy_match_in[0].end:R_fuzzy_match_in[0].start]
-            
-                for base_position in edit_position_array: 
-                    nt_at_edit_pos = chopped_read[base_position-1]
-                    nt_dict[edit] = nt_at_edit_pos
-                return {"does_it_map": does_it_map,
-                        "does_it_map_around_edit": does_it_map_around_edit,
-                        "nt_at_edit_pos": nt_at_edit_pos_dict}
-            else:
-                does_it_map_around_edit = False
-                return {"does_it_map": does_it_map,
-                        "does_it_map_around_edit": does_it_map_around_edit,
-                        "nt_at_edit_pos": nt_at_edit_pos_dict}
+                edit_nucleotide = read[L_fuzzy_match_in[0].end:R_fuzzy_match_in[0].start]
+                nt_at_edit_pos_dict[edit] = edit_nucleotide
+        return {"does_it_map": does_it_map,
+                "does_it_map_around_edit": does_it_map_around_edit,
+                "nt_at_edit_pos": nt_at_edit_pos_dict}
 
 
                      
