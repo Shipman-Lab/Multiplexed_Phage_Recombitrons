@@ -24,13 +24,17 @@ def determine_sequence_edits(read, L_fuzzy_search_out, R_fuzzy_search_out, edits
                                 the edited nucleotide is BETWEEN these two search strings
   
 
-    Outputs: does_it_map is true if the L_fuzzy_search_out and R_fuzzy_search_out each have 1 match (add up to 2)
-             does_it_map_around_edit is true if the L_fuzzy_search_in and R_fuzzy_search_in each have 1 match (add up to 2)
-             nt_at_edit_pos is the nucleotide at the edit position
-             for multiple edits, this nt_at_edit_pos is a dictionary -- nt_dict that has keys for each edit and values for the base at the edit site 
+    Outputs:
+    does_it_map:                boolean, true if the L_fuzzy_search_out and R_fuzzy_search_out each
+                                have 1 match (add up to 2)
+    does_it_map_around_edit:    boolean, true if the L_fuzzy_search_in and R_fuzzy_search_in each have
+                                1 match (add up to 2)
+    nt_at_edit_pos_dict:        a dictionary with the keys as the named edit (ex. A4T) and the value
+                                as the nucleotide at that position
+                                if there is no mapping, the values will be "N"
 
-             use wrapper script to cycle through all reads and count edits 
-
+    This function processes a single read. wrapper_sequence_edits.py cycles through multiple fastqs and all reads
+    in a fastq to process full sets of data.
     """
 
     L_fuzzy_match_out = fuzzysearch.find_near_matches(L_fuzzy_search_out, read, max_l_dist=fuzziness)
