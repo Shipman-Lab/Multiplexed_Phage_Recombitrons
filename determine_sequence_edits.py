@@ -40,17 +40,22 @@ def determine_sequence_edits(read, L_fuzzy_search_out, R_fuzzy_search_out, edits
     L_fuzzy_match_out = fuzzysearch.find_near_matches(L_fuzzy_search_out, read, max_l_dist=fuzziness)
     R_fuzzy_match_out = fuzzysearch.find_near_matches(R_fuzzy_search_out, read, max_l_dist=fuzziness)
 
+    # construct nt_at_edit_pos_dict as if nothing maps:
+    nt_at_edit_pos_dict = {}
+    for edit in edits_dict.keys():
+        nt_at_edit_pos_dict[edit] = "N"
+
     # import pdb
     # pdb.set_trace()
 
     does_it_map = ((len(L_fuzzy_match_out) == 1) & (len(R_fuzzy_match_out) == 1)) 
 
     if does_it_map == False:
-        nt_at_edit_pos = "N"
         does_it_map_around_edit = False
+        # construct nt_at_edit_pos_dict
         return {"does_it_map": does_it_map,
                 "does_it_map_around_edit": does_it_map_around_edit,
-                "nt_at_edit_pos": nt_at_edit_pos}
+                "nt_at_edit_pos": nt_at_edit_pos_dict}
     else:
         #zoom in on region of interest 
         zoom_read = read[L_fuzzy_match_out[0].end:R_fuzzy_match_out[0].start] 
@@ -58,8 +63,6 @@ def determine_sequence_edits(read, L_fuzzy_search_out, R_fuzzy_search_out, edits
         ##maybe this next part goes in the wrapper? 
         #values populated by "edits" dictionary 
         
-        nt_dict = {}
-
         for edit in edits_dict.keys():
             L_fuzzy_inside = edits_dict[edit]["L_fuzzy_inside"] 
             R_fuzzy_inside = edits_dict[edit]["R_fuzzy_inside"] 
@@ -78,13 +81,12 @@ def determine_sequence_edits(read, L_fuzzy_search_out, R_fuzzy_search_out, edits
                     nt_dict[edit] = nt_at_edit_pos
                 return {"does_it_map": does_it_map,
                         "does_it_map_around_edit": does_it_map_around_edit,
-                        "nt_at_edit_pos": nt_dict}
+                        "nt_at_edit_pos": nt_at_edit_pos_dict}
             else:
-                nt_at_edit_pos = "N"
                 does_it_map_around_edit = False
                 return {"does_it_map": does_it_map,
                         "does_it_map_around_edit": does_it_map_around_edit,
-                        "nt_at_edit_pos": nt_at_edit_pos}
+                        "nt_at_edit_pos": nt_at_edit_pos_dict}
 
 
                      
