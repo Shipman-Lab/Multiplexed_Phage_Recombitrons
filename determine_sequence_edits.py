@@ -58,7 +58,7 @@ def determine_sequence_edits(read, L_fuzzy_search_out, R_fuzzy_search_out, edits
         # construct nt_at_edit_pos_dict
         return {"does_it_map": does_it_map,
                 "does_it_map_around_edit": does_it_map_around_edit_dict,
-                "nt_at_edit_pos": nt_at_edit_pos_dict}
+                "nt_at_edit_pos_dict": nt_at_edit_pos_dict}
     else:
         #zoom in on region of interest 
         zoom_read = read[L_fuzzy_match_out[0].end:R_fuzzy_match_out[0].start] 
@@ -75,14 +75,12 @@ def determine_sequence_edits(read, L_fuzzy_search_out, R_fuzzy_search_out, edits
             does_it_map_around_edit = ((len(L_fuzzy_match_in) == 1) & (len(R_fuzzy_match_in) == 1))
 
             if does_it_map_around_edit == True: 
-                import pdb
-                pdb.set_trace()
                 edit_nucleotide = zoom_read[L_fuzzy_match_in[0].end:R_fuzzy_match_in[0].start]
                 does_it_map_around_edit_dict[edit] = True
                 nt_at_edit_pos_dict[edit] = edit_nucleotide
         return {"does_it_map": does_it_map,
                 "does_it_map_around_edit": does_it_map_around_edit_dict,
-                "nt_at_edit_pos": nt_at_edit_pos_dict}
+                "nt_at_edit_pos_dict": nt_at_edit_pos_dict}
 
 
                      
