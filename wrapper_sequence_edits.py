@@ -8,6 +8,7 @@ import numpy as np
 # set up fastq_dict = "fastq_name": [L_fuzzy_search, R_fuzzy_search}
 #set up edits 
 
+# are we looking for all 10 edits in every fastq? this really affects the below code
 fastq_dict = {"msSBK-32-20_S20_L001_R1_001.fastq": ["TATGACCAGCCAACGTCCGA", "ACTTTCGCAGTAAATCCCAT"],
               "msSBK-32-43_S43_L001_R1_001.fastq": ["TATGACCAGCCAACGTCCGA", "ACTTTCGCAGTAAATCCCAT"],
               "msSBK-32-21_S21_L001_R1_001.fastq": ["TATGACCAGCCAACGTCCGA", "ACTTTCGCAGTAAATCCCAT"],
@@ -59,13 +60,12 @@ data_loc = "./data/"
 for fastq_name in fastq_dict.keys():
     print(fastq_name)
     with open(data_loc+fastq_name) as handle:
-        nt_at_edit_pos_name_array = ["nt_at_edit_pos_%i"%(x) for x in fastq_dict[fastq_name][3]]
         df = pd.DataFrame(index = SeqIO.index(data_loc + fastq_name, 'fastq'),
                           columns = ["does_it_map", "correct_length"] + nt_at_edit_pos_name_array)
         L_fuzzy_search_out = fastq_dict[fastq_name][0]
         R_fuzzy_search_out = fastq_dict[fastq_name][1]
-        L_fuzzy_search_in = edits[edit][]
-        R_fuzzy_search_in = edits[edit][]
+        L_fuzzy_search_in = edits_dict[edit]["L_fuzzy_inside"]
+        R_fuzzy_search_in = edits_dict[edit]["R_fuzzy_inside"]
         edit_position_array = fastq_dict[fastq_name][2]
         for read in SeqIO.parse(handle, "fastq"):
             output = determine_sequence_edits(str(read.seq), L_fuzzy_search_out, R_fuzzy_search_out, L_fuzzy_search_in, R_fuzzy_search_in, edit_position_array)
