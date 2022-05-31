@@ -1,7 +1,7 @@
 from Bio import SeqIO
 import fuzzysearch
 
-def determine_sequence_edits(read, L_fuzzy_search_out, R_fuzzy_search_out, L_fuzzy_search_in, R_fuzzy_search_in, fuzziness=1):
+def determine_sequence_edits(read, L_fuzzy_search_out, R_fuzzy_search_out, edits_dict, fuzziness=1):
     """
     This function determines whether the reads map to a 
     region of interest out of the donor, if they make to a certain region of interest in the donor, 
