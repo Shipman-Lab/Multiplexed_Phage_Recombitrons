@@ -9,7 +9,7 @@ import numpy as np
 # manual input fastq names and which edits to look for 
 
 #set up edits 
-#this is for edits across the internal L-tail editor on Lambda (L5, L4, L3, L2, L1, center, R1, R2, R3, R4, R5)
+#this is for edits across the internal L-tail editor on Lambda (L5, L4, L3, L2, L1, center, R1, R2, R3, R4, R5) + A45G is for the pSBK.160 dRT control
 edits_dict = {"C4T": {"L_fuzzy_inside": "CGTCCGATAT", "R_fuzzy_inside": "ACGAANGATA"},
              "G10A": {"L_fuzzy_inside": "ATATNACGAA", "R_fuzzy_inside": "GATAAATGNA"},
              "C19T": {"L_fuzzy_inside": "ANGATAAATG", "R_fuzzy_inside": "AGCAAATGNC"},
@@ -20,48 +20,56 @@ edits_dict = {"C4T": {"L_fuzzy_inside": "CGTCCGATAT", "R_fuzzy_inside": "ACGAANG
              "C64T": {"L_fuzzy_inside": "ANGTCGGCAA", "R_fuzzy_inside": "TTTGGCGGNT"},
              "C73T": {"L_fuzzy_inside": "ANTTTGGCGG", "R_fuzzy_inside": "TTCCTTTCNA"},
              "C82T": {"L_fuzzy_inside": "GNTTCCTTTC", "R_fuzzy_inside": "ATTAANAAAC"},
-             "C88T": {"L_fuzzy_inside": "TTTCNATTAA", "R_fuzzy_inside": "AAACTTTCGC"}}
+             "C88T": {"L_fuzzy_inside": "TTTCNATTAA", "R_fuzzy_inside": "AAACTTTCGC"},
+             "A45G": {"L_fuzzy_inside": "CTTTCGCAGT", "R_fuzzy_inside": "AATCCCATGA"}}
              #since some fuzzies have N at the adjacent edit site, a fuzziness of 1 is necessary to enable a match and 2 would be more lenient 
 
-#recode parameters 
+#recode parameters
 central_edits_dict = {key: edits_dict[key] for key in ("C46T",)}
 L1_R1_edits_dict = {key: edits_dict[key] for key in ("T37C", "C46T", "C55T")}
 L2_R2_edits_dict = {key: edits_dict[key] for key in ("C28T", "T37C", "C46T", "C55T", "C64T")}
 L3_R3_edits_dict = {key: edits_dict[key] for key in ("C19T", "C28T", "T37C", "C46T", "C55T", "C64T", "C73T")}
 L4_R4_edits_dict = {key: edits_dict[key] for key in ("G10A", "C19T", "C28T", "T37C", "C46T", "C55T", "C64T", "C73T", "C82T")}
 L5_R5_edits_dict = {key: edits_dict[key] for key in ("C4T", "G10A", "C19T", "C28T", "T37C", "C46T", "C55T", "C64T", "C73T", "C82T", "C88T")}
+dRT_edits_dict = {key: edits_dict[key] for key in ("A45G",)}
 
-#for homology, MOI, and temperature parameters use central_edits_dict (pSBK.164)
+#for homology, MOI, and temperature parameters use central_edits_dict (pSBK.164) and dRT_edits_dict (pSBK.160)
 
 #for edit placement, add keys individually 
 
-#outside fuzzy search for internal L-tail editor on lambda 
+#outside fuzzy search for internal L-tail editor on lambda + dRT fuzzy searches for L-tail stop codon editor on lambda 
 L_fuzzy_search_out = "TATGACCAGCCAACGTCCGA"
 R_fuzzy_search_out = "ACTTTCGCAGTAAATCCCAT"
+dRT_L_fuzzy_search_out = "TATGACCAGCCAACGTCCGA" # same internal lambda editor, since used same forward primer CF349 
+dRT_R_fuzzy_search_out = "ATCCCATGACACAGACAGAA" # this fuzzy search is pretty far away, so may be low quality on this end... 
 
 
 #set up fastq_dict = {"fastq_name": [L_fuzzy_search_out, R_fuzzy_search_out]}
-fastq_dict = {"msSBK-32-20_S20_L001_R1_001_fortest.fastq": [L_fuzzy_search_out, R_fuzzy_search_out, central_edits_dict]}
-              # "msSBK-32-43_S43_L001_R1_001.fastq": ["TATGACCAGCCAACGTCCGA", "ACTTTCGCAGTAAATCCCAT"],
-              # "msSBK-32-21_S21_L001_R1_001.fastq": ["TATGACCAGCCAACGTCCGA", "ACTTTCGCAGTAAATCCCAT"],
-              # "msSBK-32-44_S44_L001_R1_001.fastq": ["TATGACCAGCCAACGTCCGA", "ACTTTCGCAGTAAATCCCAT"],
-              # "msSBK-32-22_S22_L001_R1_001.fastq": ["TATGACCAGCCAACGTCCGA", "ACTTTCGCAGTAAATCCCAT"],   
-              # "msSBK-32-45_S45_L001_R1_001.fastq": ["TATGACCAGCCAACGTCCGA", "ACTTTCGCAGTAAATCCCAT"],
-              # "msSBK-32-23_S23_L001_R1_001.fastq": ["TATGACCAGCCAACGTCCGA", "ACTTTCGCAGTAAATCCCAT"],   
-              # "msSBK-32-46_S46_L001_R1_001.fastq": ["TATGACCAGCCAACGTCCGA", "ACTTTCGCAGTAAATCCCAT"],
-              # "msSBK-32-24_S24_L001_R1_001.fastq": ["TATGACCAGCCAACGTCCGA", "ACTTTCGCAGTAAATCCCAT"],   
-              # "msSBK-32-52_S52_L001_R1_001.fastq": ["TATGACCAGCCAACGTCCGA", "ACTTTCGCAGTAAATCCCAT"],
-              # "msSBK-32-31_S31_L001_R1_001.fastq": ["TATGACCAGCCAACGTCCGA", "ACTTTCGCAGTAAATCCCAT"],   
-              # "msSBK-32-53_S53_L001_R1_001.fastq": ["TATGACCAGCCAACGTCCGA", "ACTTTCGCAGTAAATCCCAT"],
-              # "msSBK-32-32_S32_L001_R1_001.fastq": ["TATGACCAGCCAACGTCCGA", "ACTTTCGCAGTAAATCCCAT"],   
-              # "msSBK-32-55_S55_L001_R1_001.fastq": ["TATGACCAGCCAACGTCCGA", "ACTTTCGCAGTAAATCCCAT"],
-              # "msSBK-32-33_S33_L001_R1_001.fastq": ["TATGACCAGCCAACGTCCGA", "ACTTTCGCAGTAAATCCCAT"],   
-              # "msSBK-32-60_S60_L001_R1_001.fastq": ["TATGACCAGCCAACGTCCGA", "ACTTTCGCAGTAAATCCCAT"],
-              # "msSBK-32-34_S34_L001_R1_001.fastq": ["TATGACCAGCCAACGTCCGA", "ACTTTCGCAGTAAATCCCAT"],   
-              # "msSBK-32-61_S61_L001_R1_001.fastq": ["TATGACCAGCCAACGTCCGA", "ACTTTCGCAGTAAATCCCAT"],
-              # "msSBK-32-35_S35_L001_R1_001.fastq": ["TATGACCAGCCAACGTCCGA", "ACTTTCGCAGTAAATCCCAT"],   
-              # "msSBK-32-62_S62_L001_R1_001.fastq": ["TATGACCAGCCAACGTCCGA", "ACTTTCGCAGTAAATCCCAT"],
-              # "msSBK-32-42_S42_L001_R1_001.fastq": ["TATGACCAGCCAACGTCCGA", "ACTTTCGCAGTAAATCCCAT"]}
+fastq_dict = {"msSBK-32-20_S20_L001_R1_001.fastq":[L_fuzzy_search_out, R_fuzzy_search_out, L1_R1_edits_dict],
+            "msSBK-32-43_S43_L001_R1_001.fastq": [L_fuzzy_search_out, R_fuzzy_search_out, L2_R2_edits_dict],
+            "msSBK-32-21_S21_L001_R1_001.fastq": [L_fuzzy_search_out, R_fuzzy_search_out, L2_R2_edits_dict],
+            "msSBK-32-44_S44_L001_R1_001.fastq": [L_fuzzy_search_out, R_fuzzy_search_out, L3_R3_edits_dict],
+            "msSBK-32-22_S22_L001_R1_001.fastq": [L_fuzzy_search_out, R_fuzzy_search_out, L3_R3_edits_dict],
+            "msSBK-32-45_S45_L001_R1_001.fastq": [L_fuzzy_search_out, R_fuzzy_search_out, L4_R4_edits_dict],
+            "msSBK-32-23_S23_L001_R1_001.fastq": [L_fuzzy_search_out, R_fuzzy_search_out, L4_R4_edits_dict],
+            "msSBK-32-46_S46_L001_R1_001.fastq": [L_fuzzy_search_out, R_fuzzy_search_out, L5_R5_edits_dict],
+            "msSBK-32-24_S24_L001_R1_001.fastq": [L_fuzzy_search_out, R_fuzzy_search_out, L5_R5_edits_dict],
+            "msSBK-32-52_S52_L001_R1_001.fastq": [L_fuzzy_search_out, R_fuzzy_search_out, L2_R2_edits_dict],
+            "msSBK-32-31_S31_L001_R1_001.fastq": [L_fuzzy_search_out, R_fuzzy_search_out, L1_R1_edits_dict],
+            "msSBK-32-53_S53_L001_R1_001.fastq": [L_fuzzy_search_out, R_fuzzy_search_out, L3_R3_edits_dict],
+            "msSBK-32-32_S32_L001_R1_001.fastq": [L_fuzzy_search_out, R_fuzzy_search_out, L2_R2_edits_dict],
+            "msSBK-32-55_S55_L001_R1_001.fastq": [L_fuzzy_search_out, R_fuzzy_search_out, L5_R5_edits_dict],
+            "msSBK-32-33_S33_L001_R1_001.fastq": [L_fuzzy_search_out, R_fuzzy_search_out, L3_R3_edits_dict],
+            "msSBK-32-60_S60_L001_R1_001.fastq": [L_fuzzy_search_out, R_fuzzy_search_out, central_edits_dict],
+            "msSBK-32-34_S34_L001_R1_001.fastq": [L_fuzzy_search_out, R_fuzzy_search_out, L4_R4_edits_dict],
+            "msSBK-32-61_S61_L001_R1_001.fastq": [L_fuzzy_search_out, R_fuzzy_search_out, central_edits_dict],
+            "msSBK-32-35_S35_L001_R1_001.fastq": [L_fuzzy_search_out, R_fuzzy_search_out, L5_R5_edits_dict],
+            "msSBK-32-62_S62_L001_R1_001.fastq": [L_fuzzy_search_out, R_fuzzy_search_out, central_edits_dict],
+            "msSBK-32-42_S42_L001_R1_001.fastq": [L_fuzzy_search_out, R_fuzzy_search_out, L1_R1_edits_dict],
+            "msSBK-32-57_S57_L001_R1_001.fastq": [dRT_L_fuzzy_search_out, dRT_R_fuzzy_search_out, dRT_edits_dict],
+            "msSBK-32-58_S58_L001_R1_001.fastq": [dRT_L_fuzzy_search_out, dRT_R_fuzzy_search_out, dRT_edits_dict],
+            "msSBK-32-59_S59_L001_R1_001.fastq": [dRT_L_fuzzy_search_out, dRT_R_fuzzy_search_out, dRT_edits_dict]} 
+            #samples 54, 56 failed sequencing run 32 so not carried through 
 
 # #IF ANALYZING CI MUT EDITING 
 # #outside fuzzy search for cI mut editor on lambda 
@@ -73,7 +81,7 @@ fastq_dict = {"msSBK-32-20_S20_L001_R1_001_fortest.fastq": [L_fuzzy_search_out, 
 
 
 # direct it to where the reads are
-data_loc = "./data/"  
+data_loc = "./data/recode_fastqs_unzipped/"  
 
 # handle is the opened fastq file
 # index is all of the reads that are in the fastq 
