@@ -45,31 +45,29 @@ dRT_R_fuzzy_search_out = "ATCCCATGACACAGACAGAA" # this fuzzy search is pretty fa
 
 
 #set up fastq_dict = {"fastq_name": [L_fuzzy_search_out, R_fuzzy_search_out]}
-fastq_dict = {"msSBK-32-20_S20_L001_R1_001.fastq":[L_fuzzy_search_out, R_fuzzy_search_out, L1_R1_edits_dict],
-            "msSBK-32-43_S43_L001_R1_001.fastq": [L_fuzzy_search_out, R_fuzzy_search_out, L2_R2_edits_dict],
-            "msSBK-32-21_S21_L001_R1_001.fastq": [L_fuzzy_search_out, R_fuzzy_search_out, L2_R2_edits_dict],
-            "msSBK-32-44_S44_L001_R1_001.fastq": [L_fuzzy_search_out, R_fuzzy_search_out, L3_R3_edits_dict],
-            "msSBK-32-22_S22_L001_R1_001.fastq": [L_fuzzy_search_out, R_fuzzy_search_out, L3_R3_edits_dict],
-            "msSBK-32-45_S45_L001_R1_001.fastq": [L_fuzzy_search_out, R_fuzzy_search_out, L4_R4_edits_dict],
-            "msSBK-32-23_S23_L001_R1_001.fastq": [L_fuzzy_search_out, R_fuzzy_search_out, L4_R4_edits_dict],
-            "msSBK-32-46_S46_L001_R1_001.fastq": [L_fuzzy_search_out, R_fuzzy_search_out, L5_R5_edits_dict],
-            "msSBK-32-24_S24_L001_R1_001.fastq": [L_fuzzy_search_out, R_fuzzy_search_out, L5_R5_edits_dict],
-            "msSBK-32-52_S52_L001_R1_001.fastq": [L_fuzzy_search_out, R_fuzzy_search_out, L2_R2_edits_dict],
-            "msSBK-32-31_S31_L001_R1_001.fastq": [L_fuzzy_search_out, R_fuzzy_search_out, L1_R1_edits_dict],
-            "msSBK-32-53_S53_L001_R1_001.fastq": [L_fuzzy_search_out, R_fuzzy_search_out, L3_R3_edits_dict],
-            "msSBK-32-32_S32_L001_R1_001.fastq": [L_fuzzy_search_out, R_fuzzy_search_out, L2_R2_edits_dict],
-            "msSBK-32-55_S55_L001_R1_001.fastq": [L_fuzzy_search_out, R_fuzzy_search_out, L5_R5_edits_dict],
-            "msSBK-32-33_S33_L001_R1_001.fastq": [L_fuzzy_search_out, R_fuzzy_search_out, L3_R3_edits_dict],
-            "msSBK-32-60_S60_L001_R1_001.fastq": [L_fuzzy_search_out, R_fuzzy_search_out, central_edits_dict],
-            "msSBK-32-34_S34_L001_R1_001.fastq": [L_fuzzy_search_out, R_fuzzy_search_out, L4_R4_edits_dict],
-            "msSBK-32-61_S61_L001_R1_001.fastq": [L_fuzzy_search_out, R_fuzzy_search_out, central_edits_dict],
-            "msSBK-32-35_S35_L001_R1_001.fastq": [L_fuzzy_search_out, R_fuzzy_search_out, L5_R5_edits_dict],
-            "msSBK-32-62_S62_L001_R1_001.fastq": [L_fuzzy_search_out, R_fuzzy_search_out, central_edits_dict],
-            "msSBK-32-42_S42_L001_R1_001.fastq": [L_fuzzy_search_out, R_fuzzy_search_out, L1_R1_edits_dict],
-            "msSBK-32-57_S57_L001_R1_001.fastq": [dRT_L_fuzzy_search_out, dRT_R_fuzzy_search_out, dRT_edits_dict],
-            "msSBK-32-58_S58_L001_R1_001.fastq": [dRT_L_fuzzy_search_out, dRT_R_fuzzy_search_out, dRT_edits_dict],
-            "msSBK-32-59_S59_L001_R1_001.fastq": [dRT_L_fuzzy_search_out, dRT_R_fuzzy_search_out, dRT_edits_dict]} 
-            #samples 54, 56 failed sequencing run 32 so not carried through 
+fastq_dict = {"msSBK-32-14_S14_L001_R1_001.fastq": ["TATGACCAGCCAACGTCCGA", "ACTTTCGCAGTAAATCCCAT", central_edits_dict],
+             "msSBK-32-15_S15_L001_R1_001.fastq": ["TATGACCAGCCAACGTCCGA", "ACTTTCGCAGTAAATCCCAT", central_edits_dict],
+             "msSBK-32-16_S16_L001_R1_001.fastq": ["TATGACCAGCCAACGTCCGA", "ACTTTCGCAGTAAATCCCAT", central_edits_dict],
+             "msSBK-32-17_S17_L001_R1_001.fastq": ["TATGACCAGCCAACGTCCGA", "ACTTTCGCAGTAAATCCCAT", central_edits_dict],
+             "msSBK-32-18_S18_L001_R1_001.fastq": ["TATGACCAGCCAACGTCCGA", "ACTTTCGCAGTAAATCCCAT", central_edits_dict],
+             "msSBK-32-19_S19_L001_R1_001.fastq": ["TATGACCAGCCAACGTCCGA", "ACTTTCGCAGTAAATCCCAT", central_edits_dict],
+             "msSBK-32-25_S25_L001_R1_001.fastq": ["TATGACCAGCCAACGTCCGA", "ACTTTCGCAGTAAATCCCAT", central_edits_dict],
+             "msSBK-32-26_S26_L001_R1_001.fastq": ["TATGACCAGCCAACGTCCGA", "ACTTTCGCAGTAAATCCCAT", central_edits_dict],
+             "msSBK-32-27_S27_L001_R1_001.fastq": ["TATGACCAGCCAACGTCCGA", "ACTTTCGCAGTAAATCCCAT", central_edits_dict],
+             "msSBK-32-28_S28_L001_R1_001.fastq": ["TATGACCAGCCAACGTCCGA", "ACTTTCGCAGTAAATCCCAT", central_edits_dict],
+             "msSBK-32-29_S29_L001_R1_001.fastq": ["TATGACCAGCCAACGTCCGA", "ACTTTCGCAGTAAATCCCAT", central_edits_dict],
+             "msSBK-32-30_S30_L001_R1_001.fastq": ["TATGACCAGCCAACGTCCGA", "ACTTTCGCAGTAAATCCCAT", central_edits_dict],
+             "msSBK-32-36_S36_L001_R1_001.fastq": ["TATGACCAGCCAACGTCCGA", "ACTTTCGCAGTAAATCCCAT", central_edits_dict],
+             "msSBK-32-37_S37_L001_R1_001.fastq": ["TATGACCAGCCAACGTCCGA", "ACTTTCGCAGTAAATCCCAT", central_edits_dict],
+             "msSBK-32-38_S38_L001_R1_001.fastq": ["TATGACCAGCCAACGTCCGA", "ACTTTCGCAGTAAATCCCAT", central_edits_dict],
+             "msSBK-32-39_S39_L001_R1_001.fastq": ["TATGACCAGCCAACGTCCGA", "ACTTTCGCAGTAAATCCCAT", central_edits_dict],
+             "msSBK-32-40_S40_L001_R1_001.fastq": ["TATGACCAGCCAACGTCCGA", "ACTTTCGCAGTAAATCCCAT", central_edits_dict],
+             "msSBK-32-41_S41_L001_R1_001.fastq": ["TATGACCAGCCAACGTCCGA", "ACTTTCGCAGTAAATCCCAT", central_edits_dict],
+             "msSBK-32-47_S47_L001_R1_001.fastq": ["TATGACCAGCCAACGTCCGA", "ACTTTCGCAGTAAATCCCAT", central_edits_dict],
+             "msSBK-32-48_S48_L001_R1_001.fastq": ["TATGACCAGCCAACGTCCGA", "ACTTTCGCAGTAAATCCCAT", central_edits_dict],
+             "msSBK-32-49_S49_L001_R1_001.fastq": ["TATGACCAGCCAACGTCCGA", "ACTTTCGCAGTAAATCCCAT", central_edits_dict],
+             "msSBK-32-50_S50_L001_R1_001.fastq": ["TATGACCAGCCAACGTCCGA", "ACTTTCGCAGTAAATCCCAT", central_edits_dict],
+             "msSBK-32-51_S51_L001_R1_001.fastq": ["TATGACCAGCCAACGTCCGA", "ACTTTCGCAGTAAATCCCAT", central_edits_dict]}
 
 # #IF ANALYZING CI MUT EDITING 
 # #outside fuzzy search for cI mut editor on lambda 
@@ -81,7 +79,7 @@ fastq_dict = {"msSBK-32-20_S20_L001_R1_001.fastq":[L_fuzzy_search_out, R_fuzzy_s
 
 
 # direct it to where the reads are
-data_loc = "./data/recode_fastqs_unzipped/"  
+data_loc = "./data/homology_unzipped/"  
 
 # handle is the opened fastq file
 # index is all of the reads that are in the fastq 
