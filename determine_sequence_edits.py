@@ -22,7 +22,7 @@ def determine_sequence_edits(read, L_fuzzy_search_out, R_fuzzy_search_out, edits
                                 search L_fuzzy_inside (right next to the edit) and a right flanking search
                                 R_fuzzy_inside (just to the right of the edit)
                                 the edited nucleotide is BETWEEN these two search strings
-  
+
 
     Outputs:
     does_it_map:                   boolean, true if the L_fuzzy_search_out and R_fuzzy_search_out each
@@ -37,8 +37,6 @@ def determine_sequence_edits(read, L_fuzzy_search_out, R_fuzzy_search_out, edits
     This function processes a single read. wrapper_sequence_edits.py cycles through multiple fastqs and all reads
     in a fastq to process full sets of data.
 
-    # TO DOS:
-    - change does_it_map_around_edit to a dictionary also
     """
 
     L_fuzzy_match_out = fuzzysearch.find_near_matches(L_fuzzy_search_out, read, max_l_dist=fuzziness)
@@ -57,13 +55,13 @@ def determine_sequence_edits(read, L_fuzzy_search_out, R_fuzzy_search_out, edits
     if does_it_map == False:
         # construct nt_at_edit_pos_dict
         return {"does_it_map": does_it_map,
-                "does_it_map_around_edit": does_it_map_around_edit_dict,
+                "does_it_map_around_edit_dict": does_it_map_around_edit_dict,
                 "nt_at_edit_pos_dict": nt_at_edit_pos_dict}
     else:
         #zoom in on region of interest 
-        zoom_read = read[L_fuzzy_match_out[0].end:R_fuzzy_match_out[0].start] 
+        ####instead of start of left and end of right, can change fuzzy search to 10bases and do end of left, start of right 
+        zoom_read = read[L_fuzzy_match_out[0].start:R_fuzzy_match_out[0].end] 
 
-        ##maybe this next part goes in the wrapper? 
         #values populated by "edits" dictionary 
         for edit in edits_dict.keys():
             L_fuzzy_inside = edits_dict[edit]["L_fuzzy_inside"] 
@@ -80,13 +78,13 @@ def determine_sequence_edits(read, L_fuzzy_search_out, R_fuzzy_search_out, edits
                 if len(edit_nucleotide) == 1:
                     nt_at_edit_pos_dict[edit] = edit_nucleotide
         return {"does_it_map": does_it_map,
-                "does_it_map_around_edit": does_it_map_around_edit_dict,
+                "does_it_map_around_edit_dict": does_it_map_around_edit_dict,
                 "nt_at_edit_pos_dict": nt_at_edit_pos_dict}
 
 
                      
 
-
+#change tests to have _dict for does_it_map_around_edit --> _dict 
 
 
 
