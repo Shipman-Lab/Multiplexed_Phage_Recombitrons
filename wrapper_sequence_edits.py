@@ -31,43 +31,78 @@ L2_R2_edits_dict = {key: edits_dict[key] for key in ("C28T", "T37C", "C46T", "C5
 L3_R3_edits_dict = {key: edits_dict[key] for key in ("C19T", "C28T", "T37C", "C46T", "C55T", "C64T", "C73T")}
 L4_R4_edits_dict = {key: edits_dict[key] for key in ("G10A", "C19T", "C28T", "T37C", "C46T", "C55T", "C64T", "C73T", "C82T")}
 L5_R5_edits_dict = {key: edits_dict[key] for key in ("C4T", "G10A", "C19T", "C28T", "T37C", "C46T", "C55T", "C64T", "C73T", "C82T", "C88T")}
-dRT_edits_dict = {key: edits_dict[key] for key in ("A45G",)}
+stop_edits_dict = {key: edits_dict[key] for key in ("A45G",)}
 
-#for homology, MOI, and temperature parameters use central_edits_dict (pSBK.164) and dRT_edits_dict (pSBK.160)
+#for homology parameters, use central_edits_dict (pSBK.164) and stop_edits_dict (pSBK.160)
+#for MOI, and temperature parameters, use stop_edits_dict (pSBK.160, pSBK.148)
 
 #for edit placement, add keys individually 
 
-#outside fuzzy search for internal L-tail editor on lambda + dRT fuzzy searches for L-tail stop codon editor on lambda 
-L_fuzzy_search_out = "TATGACCAGCCAACGTCCGA"
-R_fuzzy_search_out = "ACTTTCGCAGTAAATCCCAT"
-dRT_L_fuzzy_search_out = "TATGACCAGCCAACGTCCGA" # same internal lambda editor, since used same forward primer CF349 
-dRT_R_fuzzy_search_out = "ATCCCATGACACAGACAGAA" # this fuzzy search is pretty far away, so may be low quality on this end... 
-
+#outside fuzzy search for internal L-tail editor on lambda + fuzzy searches for L-tail stop codon editor on lambda 
+L_fuzzy_search_out = "TATGACCAGCCAACGTCCGA" #this works for edit placement, recode, and homology (forward CF349, reverse lambda_L_genoMS_R)
+R_fuzzy_search_out = "ACTTTCGCAGTAAATCCCAT" #this works for edit placement, recode, and homology (except for dRT control)
+stop_L_fuzzy_search_out = "TATGACCAGCCAACGTCCGA" # this works for stop codon edit pSBK.160 (dRT control) (forward CF349, reverse lambda_L_genoMS_R) 
+stop_R_fuzzy_search_out = "ATCCCATGACACAGACAGAA" # this fuzzy search is pretty far away from the start, so may be low quality on this end... 
+MOI_temp_L_fuzzy_search_out = "TGTAAGTTCCGCAATAACGT" # this works for stop codon edit pSBK.148 (lambda_L_genoMS_F, lambda_L_genoMS_R)
+MOI_temp_R_fuzzy_search_out = "CGATGTGCGCCAGCGGAGTC" # this works for stop codon edit pSBK.148
 
 #set up fastq_dict = {"fastq_name": [L_fuzzy_search_out, R_fuzzy_search_out]}
-fastq_dict = {"msSBK-32-14_S14_L001_R1_001.fastq": ["TATGACCAGCCAACGTCCGA", "ACTTTCGCAGTAAATCCCAT", central_edits_dict],
-             "msSBK-32-15_S15_L001_R1_001.fastq": ["TATGACCAGCCAACGTCCGA", "ACTTTCGCAGTAAATCCCAT", central_edits_dict],
-             "msSBK-32-16_S16_L001_R1_001.fastq": ["TATGACCAGCCAACGTCCGA", "ACTTTCGCAGTAAATCCCAT", central_edits_dict],
-             "msSBK-32-17_S17_L001_R1_001.fastq": ["TATGACCAGCCAACGTCCGA", "ACTTTCGCAGTAAATCCCAT", central_edits_dict],
-             "msSBK-32-18_S18_L001_R1_001.fastq": ["TATGACCAGCCAACGTCCGA", "ACTTTCGCAGTAAATCCCAT", central_edits_dict],
-             "msSBK-32-19_S19_L001_R1_001.fastq": ["TATGACCAGCCAACGTCCGA", "ACTTTCGCAGTAAATCCCAT", central_edits_dict],
-             "msSBK-32-25_S25_L001_R1_001.fastq": ["TATGACCAGCCAACGTCCGA", "ACTTTCGCAGTAAATCCCAT", central_edits_dict],
-             "msSBK-32-26_S26_L001_R1_001.fastq": ["TATGACCAGCCAACGTCCGA", "ACTTTCGCAGTAAATCCCAT", central_edits_dict],
-             "msSBK-32-27_S27_L001_R1_001.fastq": ["TATGACCAGCCAACGTCCGA", "ACTTTCGCAGTAAATCCCAT", central_edits_dict],
-             "msSBK-32-28_S28_L001_R1_001.fastq": ["TATGACCAGCCAACGTCCGA", "ACTTTCGCAGTAAATCCCAT", central_edits_dict],
-             "msSBK-32-29_S29_L001_R1_001.fastq": ["TATGACCAGCCAACGTCCGA", "ACTTTCGCAGTAAATCCCAT", central_edits_dict],
-             "msSBK-32-30_S30_L001_R1_001.fastq": ["TATGACCAGCCAACGTCCGA", "ACTTTCGCAGTAAATCCCAT", central_edits_dict],
-             "msSBK-32-36_S36_L001_R1_001.fastq": ["TATGACCAGCCAACGTCCGA", "ACTTTCGCAGTAAATCCCAT", central_edits_dict],
-             "msSBK-32-37_S37_L001_R1_001.fastq": ["TATGACCAGCCAACGTCCGA", "ACTTTCGCAGTAAATCCCAT", central_edits_dict],
-             "msSBK-32-38_S38_L001_R1_001.fastq": ["TATGACCAGCCAACGTCCGA", "ACTTTCGCAGTAAATCCCAT", central_edits_dict],
-             "msSBK-32-39_S39_L001_R1_001.fastq": ["TATGACCAGCCAACGTCCGA", "ACTTTCGCAGTAAATCCCAT", central_edits_dict],
-             "msSBK-32-40_S40_L001_R1_001.fastq": ["TATGACCAGCCAACGTCCGA", "ACTTTCGCAGTAAATCCCAT", central_edits_dict],
-             "msSBK-32-41_S41_L001_R1_001.fastq": ["TATGACCAGCCAACGTCCGA", "ACTTTCGCAGTAAATCCCAT", central_edits_dict],
-             "msSBK-32-47_S47_L001_R1_001.fastq": ["TATGACCAGCCAACGTCCGA", "ACTTTCGCAGTAAATCCCAT", central_edits_dict],
-             "msSBK-32-48_S48_L001_R1_001.fastq": ["TATGACCAGCCAACGTCCGA", "ACTTTCGCAGTAAATCCCAT", central_edits_dict],
-             "msSBK-32-49_S49_L001_R1_001.fastq": ["TATGACCAGCCAACGTCCGA", "ACTTTCGCAGTAAATCCCAT", central_edits_dict],
-             "msSBK-32-50_S50_L001_R1_001.fastq": ["TATGACCAGCCAACGTCCGA", "ACTTTCGCAGTAAATCCCAT", central_edits_dict],
-             "msSBK-32-51_S51_L001_R1_001.fastq": ["TATGACCAGCCAACGTCCGA", "ACTTTCGCAGTAAATCCCAT", central_edits_dict]}
+# fastq_dict = {"msSBK-32-63_S63_L001_R1_001.fastq":[MOI_temp_L_fuzzy_search_out, MOI_temp_R_fuzzy_search_out, stop_edits_dict],
+#              "msSBK-32-64_S64_L001_R1_001.fastq": [MOI_temp_L_fuzzy_search_out, MOI_temp_R_fuzzy_search_out, stop_edits_dict],
+#              "msSBK-32-65_S65_L001_R1_001.fastq": [MOI_temp_L_fuzzy_search_out, MOI_temp_R_fuzzy_search_out, stop_edits_dict],
+#              "msSBK-32-66_S66_L001_R1_001.fastq": [MOI_temp_L_fuzzy_search_out, MOI_temp_R_fuzzy_search_out, stop_edits_dict],
+fastq_dict = {"msSBK-33-89_S88_L001_R1_001.fastq": [MOI_temp_L_fuzzy_search_out, MOI_temp_R_fuzzy_search_out, stop_edits_dict],
+             "msSBK-33-90_S89_L001_R1_001.fastq": [MOI_temp_L_fuzzy_search_out, MOI_temp_R_fuzzy_search_out, stop_edits_dict],
+             "msSBK-33-91_S90_L001_R1_001.fastq": [MOI_temp_L_fuzzy_search_out, MOI_temp_R_fuzzy_search_out, stop_edits_dict],
+             "msSBK-33-92_S91_L001_R1_001.fastq": [MOI_temp_L_fuzzy_search_out, MOI_temp_R_fuzzy_search_out, stop_edits_dict],
+             "msSBK-33-93_S92_L001_R1_001.fastq": [MOI_temp_L_fuzzy_search_out, MOI_temp_R_fuzzy_search_out, stop_edits_dict],
+             "msSBK-33-94_S93_L001_R1_001.fastq": [MOI_temp_L_fuzzy_search_out, MOI_temp_R_fuzzy_search_out, stop_edits_dict],
+             "msSBK-33-95_S94_L001_R1_001.fastq": [MOI_temp_L_fuzzy_search_out, MOI_temp_R_fuzzy_search_out, stop_edits_dict],
+             "msSBK-33-96_S95_L001_R1_001.fastq": [MOI_temp_L_fuzzy_search_out, MOI_temp_R_fuzzy_search_out, stop_edits_dict],
+             "msSBK-33-97_S96_L001_R1_001.fastq": [MOI_temp_L_fuzzy_search_out, MOI_temp_R_fuzzy_search_out, stop_edits_dict],
+             "msSBK-33-98_S97_L001_R1_001.fastq": [MOI_temp_L_fuzzy_search_out, MOI_temp_R_fuzzy_search_out, stop_edits_dict],
+             "msSBK-33-99_S98_L001_R1_001.fastq": [MOI_temp_L_fuzzy_search_out, MOI_temp_R_fuzzy_search_out, stop_edits_dict],
+             "msSBK-33-100_S99_L001_R1_001.fastq": [MOI_temp_L_fuzzy_search_out, MOI_temp_R_fuzzy_search_out, stop_edits_dict],
+             "msSBK-33-101_S100_L001_R1_001.fastq": [MOI_temp_L_fuzzy_search_out, MOI_temp_R_fuzzy_search_out, stop_edits_dict],
+             "msSBK-33-102_S101_L001_R1_001.fastq": [MOI_temp_L_fuzzy_search_out, MOI_temp_R_fuzzy_search_out, stop_edits_dict],
+             "msSBK-33-103_S102_L001_R1_001.fastq": [MOI_temp_L_fuzzy_search_out, MOI_temp_R_fuzzy_search_out, stop_edits_dict],
+             "msSBK-33-104_S103_L001_R1_001.fastq": [MOI_temp_L_fuzzy_search_out, MOI_temp_R_fuzzy_search_out, stop_edits_dict],
+             "msSBK-33-105_S104_L001_R1_001.fastq": [MOI_temp_L_fuzzy_search_out, MOI_temp_R_fuzzy_search_out, stop_edits_dict],
+             "msSBK-33-106_S105_L001_R1_001.fastq": [MOI_temp_L_fuzzy_search_out, MOI_temp_R_fuzzy_search_out, stop_edits_dict],
+             "msSBK-33-107_S106_L001_R1_001.fastq": [MOI_temp_L_fuzzy_search_out, MOI_temp_R_fuzzy_search_out, stop_edits_dict],
+             "msSBK-33-108_S107_L001_R1_001.fastq": [MOI_temp_L_fuzzy_search_out, MOI_temp_R_fuzzy_search_out, stop_edits_dict],
+             "msSBK-33-109_S108_L001_R1_001.fastq": [MOI_temp_L_fuzzy_search_out, MOI_temp_R_fuzzy_search_out, stop_edits_dict],
+             "msSBK-33-110_S109_L001_R1_001.fastq": [MOI_temp_L_fuzzy_search_out, MOI_temp_R_fuzzy_search_out, stop_edits_dict],
+             "msSBK-33-111_S110_L001_R1_001.fastq": [MOI_temp_L_fuzzy_search_out, MOI_temp_R_fuzzy_search_out, stop_edits_dict],
+             "msSBK-33-112_S111_L001_R1_001.fastq": [MOI_temp_L_fuzzy_search_out, MOI_temp_R_fuzzy_search_out, stop_edits_dict],
+             "msSBK-33-113_S112_L001_R1_001.fastq": [MOI_temp_L_fuzzy_search_out, MOI_temp_R_fuzzy_search_out, stop_edits_dict],
+             "msSBK-33-114_S113_L001_R1_001.fastq": [MOI_temp_L_fuzzy_search_out, MOI_temp_R_fuzzy_search_out, stop_edits_dict],
+             "msSBK-33-115_S114_L001_R1_001.fastq": [MOI_temp_L_fuzzy_search_out, MOI_temp_R_fuzzy_search_out, stop_edits_dict],
+             "msSBK-33-116_S115_L001_R1_001.fastq": [MOI_temp_L_fuzzy_search_out, MOI_temp_R_fuzzy_search_out, stop_edits_dict],
+             "msSBK-33-117_S116_L001_R1_001.fastq": [MOI_temp_L_fuzzy_search_out, MOI_temp_R_fuzzy_search_out, stop_edits_dict],
+             "msSBK-33-118_S117_L001_R1_001.fastq": [MOI_temp_L_fuzzy_search_out, MOI_temp_R_fuzzy_search_out, stop_edits_dict],
+             "msSBK-33-119_S118_L001_R1_001.fastq": [MOI_temp_L_fuzzy_search_out, MOI_temp_R_fuzzy_search_out, stop_edits_dict],
+             "msSBK-33-120_S119_L001_R1_001.fastq": [MOI_temp_L_fuzzy_search_out, MOI_temp_R_fuzzy_search_out, stop_edits_dict],
+             "msSBK-33-121_S120_L001_R1_001.fastq": [MOI_temp_L_fuzzy_search_out, MOI_temp_R_fuzzy_search_out, stop_edits_dict],
+             "msSBK-33-122_S121_L001_R1_001.fastq": [MOI_temp_L_fuzzy_search_out, MOI_temp_R_fuzzy_search_out, stop_edits_dict],
+             "msSBK-33-123_S122_L001_R1_001.fastq": [MOI_temp_L_fuzzy_search_out, MOI_temp_R_fuzzy_search_out, stop_edits_dict],
+             "msSBK-33-124_S123_L001_R1_001.fastq": [MOI_temp_L_fuzzy_search_out, MOI_temp_R_fuzzy_search_out, stop_edits_dict],}
+
+             # "msSBK-32-64_S64_L001_R1_001.fastq": [stop_L_fuzzy_search_out, stop_R_fuzzy_search_out ,central_edits_dict],
+             # "msSBK-32-65_S65_L001_R1_001.fastq": [stop_L_fuzzy_search_out, stop_R_fuzzy_search_out ,central_edits_dict],
+             # "msSBK-32-66_S66_L001_R1_001.fastq": [stop_L_fuzzy_search_out, stop_R_fuzzy_search_out ,central_edits_dict],
+             # "msSBK-32-67_S67_L001_R1_001.fastq": [stop_L_fuzzy_search_out, stop_R_fuzzy_search_out ,central_edits_dict],
+             # "msSBK-32-68_S68_L001_R1_001.fastq": [stop_L_fuzzy_search_out, stop_R_fuzzy_search_out ,central_edits_dict],
+             # "msSBK-32-69_S69_L001_R1_001.fastq": [stop_L_fuzzy_search_out, stop_R_fuzzy_search_out ,central_edits_dict],
+             # "msSBK-32-70_S70_L001_R1_001.fastq": [stop_L_fuzzy_search_out, stop_R_fuzzy_search_out ,central_edits_dict],
+             # "msSBK-32-76_S76_L001_R1_001.fastq": [stop_L_fuzzy_search_out, stop_R_fuzzy_search_out ,central_edits_dict],
+             # "msSBK-32-77_S77_L001_R1_001.fastq": [stop_L_fuzzy_search_out, stop_R_fuzzy_search_out ,central_edits_dict],
+             # "msSBK-32-78_S78_L001_R1_001.fastq": [stop_L_fuzzy_search_out, stop_R_fuzzy_search_out ,central_edits_dict],
+             # "msSBK-32-79_S79_L001_R1_001.fastq": [stop_L_fuzzy_search_out, stop_R_fuzzy_search_out ,central_edits_dict],
+             # "msSBK-32-80_S80_L001_R1_001.fastq": [stop_L_fuzzy_search_out, stop_R_fuzzy_search_out ,central_edits_dict],
+             # "msSBK-32-81_S81_L001_R1_001.fastq": [stop_L_fuzzy_search_out, stop_R_fuzzy_search_out ,central_edits_dict],
+             # "msSBK-32-82_S87_L001_R1_001.fastq": [stop_L_fuzzy_search_out, stop_R_fuzzy_search_out ,central_edits_dict],
+             # "msSBK-32-83_S88_L001_R1_001.fastq": [stop_L_fuzzy_search_out, stop_R_fuzzy_search_out ,central_edits_dict],
 
 # #IF ANALYZING CI MUT EDITING 
 # #outside fuzzy search for cI mut editor on lambda 
@@ -79,7 +114,7 @@ fastq_dict = {"msSBK-32-14_S14_L001_R1_001.fastq": ["TATGACCAGCCAACGTCCGA", "ACT
 
 
 # direct it to where the reads are
-data_loc = "./data/homology_unzipped/"  
+data_loc = "./data/MOI_temp_fastqs_unzipped/"  
 
 # handle is the opened fastq file
 # index is all of the reads that are in the fastq 
