@@ -21,7 +21,9 @@ edits_dict = {"C4T": {"L_fuzzy_inside": "CGTCCGATAT", "R_fuzzy_inside": "ACGAANG
              "C73T": {"L_fuzzy_inside": "ANTTTGGCGG", "R_fuzzy_inside": "TTCCTTTCNA"},
              "C82T": {"L_fuzzy_inside": "GNTTCCTTTC", "R_fuzzy_inside": "ATTAANAAAC"},
              "C88T": {"L_fuzzy_inside": "TTTCNATTAA", "R_fuzzy_inside": "AAACTTTCGC"},
-             "A45G": {"L_fuzzy_inside": "CTTTCGCAGT", "R_fuzzy_inside": "AATCCCATGA"}}
+             "A45G": {"L_fuzzy_inside": "CTTTCGCAGT", "R_fuzzy_inside": "AATCCCATGA"}, #for stop codon pSBK.160, 148 
+             "T23A": {"L_fuzzy_inside": "ATCAATGCAT", "R_fuzzy_inside": "AAATGCTTAT"}, #for cI 
+             "A52T": {"L_fuzzy_inside": "ATTGCTTGCA", "R_fuzzy_inside": "AAATTCTCAA"}} #for cI 
              #since some fuzzies have N at the adjacent edit site, a fuzziness of 1 is necessary to enable a match and 2 would be more lenient 
 
 #recode parameters
@@ -46,96 +48,15 @@ stop_L_fuzzy_search_out = "TATGACCAGCCAACGTCCGA" # this works for stop codon edi
 stop_R_fuzzy_search_out = "ATCCCATGACACAGACAGAA" # this fuzzy search is pretty far away from the start, so may be low quality on this end... 
 MOI_temp_L_fuzzy_search_out = "TGTAAGTTCCGCAATAACGT" # this works for stop codon edit pSBK.148 (lambda_L_genoMS_F, lambda_L_genoMS_R)
 MOI_temp_R_fuzzy_search_out = "CGATGTGCGCCAGCGGAGTC" # this works for stop codon edit pSBK.148
+cI_L_fuzzy_search_out = ""
+cI_R_fuzzy_search_out = ""
 
 
 #set up fastq_dict = {"fastq_name": [L_fuzzy_search_out, R_fuzzy_search_out]}
-fastq_dict = {"msSBK-33-01_S1_L001_R1_001.fastq": [L_fuzzy_search_out, R_fuzzy_search_out, {key: edits_dict[key] for key in ("C46T", "C4T")}],
-            "msSBK-33-02_S2_L001_R1_001.fastq": [L_fuzzy_search_out, R_fuzzy_search_out, {key: edits_dict[key] for key in ("C46T", "G10A")}],
-            "msSBK-33-03_S3_L001_R1_001.fastq": [L_fuzzy_search_out, R_fuzzy_search_out, {key: edits_dict[key] for key in ("C46T", "C19T")}],
-            "msSBK-33-04_S4_L001_R1_001.fastq": [L_fuzzy_search_out, R_fuzzy_search_out, {key: edits_dict[key] for key in ("C46T", "C28T")}],
-            "msSBK-33-05_S5_L001_R1_001.fastq": [L_fuzzy_search_out, R_fuzzy_search_out, {key: edits_dict[key] for key in ("C46T", "T37C")}],
-            "msSBK-33-06_S6_L001_R1_001.fastq": [L_fuzzy_search_out, R_fuzzy_search_out, {key: edits_dict[key] for key in ("C46T", "C55T")}],
-            "msSBK-33-07_S7_L001_R1_001.fastq": [L_fuzzy_search_out, R_fuzzy_search_out, {key: edits_dict[key] for key in ("C46T", "C64T")}],
-            "msSBK-33-08_S8_L001_R1_001.fastq": [L_fuzzy_search_out, R_fuzzy_search_out, {key: edits_dict[key] for key in ("C46T", "C73T")}],
-            "msSBK-33-09_S9_L001_R1_001.fastq": [L_fuzzy_search_out, R_fuzzy_search_out, {key: edits_dict[key] for key in ("C46T", "C82T")}],
-            "msSBK-33-10_S10_L001_R1_001.fastq": [L_fuzzy_search_out, R_fuzzy_search_out, {key: edits_dict[key] for key in ("C46T", "C88T")}],
-            "msSBK-33-11_S11_L001_R1_001.fastq": [L_fuzzy_search_out, R_fuzzy_search_out, {key: edits_dict[key] for key in ("C4T",)}],
-            "msSBK-33-12_S12_L001_R1_001.fastq": [L_fuzzy_search_out, R_fuzzy_search_out, {key: edits_dict[key] for key in ("G10A",)}],
-            "msSBK-33-13_S13_L001_R1_001.fastq": [L_fuzzy_search_out, R_fuzzy_search_out, {key: edits_dict[key] for key in ("C19T",)}],
-            "msSBK-33-14_S14_L001_R1_001.fastq": [L_fuzzy_search_out, R_fuzzy_search_out, {key: edits_dict[key] for key in ("C28T",)}],
-            "msSBK-33-15_S15_L001_R1_001.fastq": [L_fuzzy_search_out, R_fuzzy_search_out, {key: edits_dict[key] for key in ("T37C",)}],
-            "msSBK-33-16_S16_L001_R1_001.fastq": [L_fuzzy_search_out, R_fuzzy_search_out, {key: edits_dict[key] for key in ("C55T",)}],
-            "msSBK-33-17_S17_L001_R1_001.fastq": [L_fuzzy_search_out, R_fuzzy_search_out, {key: edits_dict[key] for key in ("C64T",)}],
-            "msSBK-33-18_S18_L001_R1_001.fastq": [L_fuzzy_search_out, R_fuzzy_search_out, {key: edits_dict[key] for key in ("C73T",)}],
-            "msSBK-33-19_S19_L001_R1_001.fastq": [L_fuzzy_search_out, R_fuzzy_search_out, {key: edits_dict[key] for key in ("C82T",)}],
-            "msSBK-33-20_S20_L001_R1_001.fastq": [L_fuzzy_search_out, R_fuzzy_search_out, {key: edits_dict[key] for key in ("C88T",)}],
-            "msSBK-33-21_S21_L001_R1_001.fastq": [stop_L_fuzzy_search_out, stop_R_fuzzy_search_out, stop_edits_dict],
-            "msSBK-33-22_S22_L001_R1_001.fastq": [L_fuzzy_search_out, R_fuzzy_search_out, central_edits_dict],
-            "msSBK-33-23_S23_L001_R1_001.fastq": [L_fuzzy_search_out, R_fuzzy_search_out, {key: edits_dict[key] for key in ("C46T", "C4T")}],
-            "msSBK-33-24_S24_L001_R1_001.fastq": [L_fuzzy_search_out, R_fuzzy_search_out, {key: edits_dict[key] for key in ("C46T", "G10A")}],
-            "msSBK-33-25_S25_L001_R1_001.fastq": [L_fuzzy_search_out, R_fuzzy_search_out, {key: edits_dict[key] for key in ("C46T", "C19T")}],
-            "msSBK-33-26_S26_L001_R1_001.fastq": [L_fuzzy_search_out, R_fuzzy_search_out, {key: edits_dict[key] for key in ("C46T", "C28T")}],
-            "msSBK-33-27_S27_L001_R1_001.fastq": [L_fuzzy_search_out, R_fuzzy_search_out, {key: edits_dict[key] for key in ("C46T", "T37C")}],
-            "msSBK-33-28_S28_L001_R1_001.fastq": [L_fuzzy_search_out, R_fuzzy_search_out, {key: edits_dict[key] for key in ("C46T", "C55T")}],
-            "msSBK-33-29_S29_L001_R1_001.fastq": [L_fuzzy_search_out, R_fuzzy_search_out, {key: edits_dict[key] for key in ("C46T", "C64T")}],
-            "msSBK-33-30_S30_L001_R1_001.fastq": [L_fuzzy_search_out, R_fuzzy_search_out, {key: edits_dict[key] for key in ("C46T", "C73T")}],
-            "msSBK-33-31_S31_L001_R1_001.fastq": [L_fuzzy_search_out, R_fuzzy_search_out, {key: edits_dict[key] for key in ("C46T", "C82T")}],
-            "msSBK-33-32_S32_L001_R1_001.fastq": [L_fuzzy_search_out, R_fuzzy_search_out, {key: edits_dict[key] for key in ("C46T", "C88T")}],
-            "msSBK-33-33_S33_L001_R1_001.fastq": [L_fuzzy_search_out, R_fuzzy_search_out, {key: edits_dict[key] for key in ("C4T",)}],
-            "msSBK-33-34_S34_L001_R1_001.fastq": [L_fuzzy_search_out, R_fuzzy_search_out, {key: edits_dict[key] for key in ("G10A",)}],
-            "msSBK-33-35_S35_L001_R1_001.fastq": [L_fuzzy_search_out, R_fuzzy_search_out, {key: edits_dict[key] for key in ("C19T",)}],
-            "msSBK-33-36_S36_L001_R1_001.fastq": [L_fuzzy_search_out, R_fuzzy_search_out, {key: edits_dict[key] for key in ("C28T",)}],
-            "msSBK-33-37_S37_L001_R1_001.fastq": [L_fuzzy_search_out, R_fuzzy_search_out, {key: edits_dict[key] for key in ("T37C",)}],
-            "msSBK-33-38_S38_L001_R1_001.fastq": [L_fuzzy_search_out, R_fuzzy_search_out, {key: edits_dict[key] for key in ("C55T",)}],
-            "msSBK-33-39_S39_L001_R1_001.fastq": [L_fuzzy_search_out, R_fuzzy_search_out, {key: edits_dict[key] for key in ("C64T",)}],
-            "msSBK-33-40_S40_L001_R1_001.fastq": [L_fuzzy_search_out, R_fuzzy_search_out, {key: edits_dict[key] for key in ("C73T",)}],
-            "msSBK-33-41_S41_L001_R1_001.fastq": [L_fuzzy_search_out, R_fuzzy_search_out, {key: edits_dict[key] for key in ("C82T",)}],
-            "msSBK-33-42_S42_L001_R1_001.fastq": [L_fuzzy_search_out, R_fuzzy_search_out, {key: edits_dict[key] for key in ("C88T",)}],
-            "msSBK-33-43_S43_L001_R1_001.fastq": [stop_L_fuzzy_search_out, stop_R_fuzzy_search_out, stop_edits_dict],
-            "msSBK-33-44_S44_L001_R1_001.fastq": [L_fuzzy_search_out, R_fuzzy_search_out, central_edits_dict],
-            "msSBK-33-45_S45_L001_R1_001.fastq": [L_fuzzy_search_out, R_fuzzy_search_out, {key: edits_dict[key] for key in ("C46T", "C4T")}],
-            "msSBK-33-46_S46_L001_R1_001.fastq": [L_fuzzy_search_out, R_fuzzy_search_out, {key: edits_dict[key] for key in ("C46T", "G10A")}],
-            "msSBK-33-47_S47_L001_R1_001.fastq": [L_fuzzy_search_out, R_fuzzy_search_out, {key: edits_dict[key] for key in ("C46T", "C19T")}],
-            "msSBK-33-48_S48_L001_R1_001.fastq": [L_fuzzy_search_out, R_fuzzy_search_out, {key: edits_dict[key] for key in ("C46T", "C28T")}],
-            "msSBK-33-49_S49_L001_R1_001.fastq": [L_fuzzy_search_out, R_fuzzy_search_out, {key: edits_dict[key] for key in ("C46T", "T37C")}],
-            "msSBK-33-50_S50_L001_R1_001.fastq": [L_fuzzy_search_out, R_fuzzy_search_out, {key: edits_dict[key] for key in ("C46T", "C55T")}],
-            "msSBK-33-51_S51_L001_R1_001.fastq": [L_fuzzy_search_out, R_fuzzy_search_out, {key: edits_dict[key] for key in ("C46T", "C64T")}],
-            "msSBK-33-52_S52_L001_R1_001.fastq": [L_fuzzy_search_out, R_fuzzy_search_out, {key: edits_dict[key] for key in ("C46T", "C73T")}],
-            "msSBK-33-53_S53_L001_R1_001.fastq": [L_fuzzy_search_out, R_fuzzy_search_out, {key: edits_dict[key] for key in ("C46T", "C82T")}],
-            "msSBK-33-54_S54_L001_R1_001.fastq": [L_fuzzy_search_out, R_fuzzy_search_out, {key: edits_dict[key] for key in ("C46T", "C88T")}],
-            "msSBK-33-55_S55_L001_R1_001.fastq": [L_fuzzy_search_out, R_fuzzy_search_out, {key: edits_dict[key] for key in ("C4T",)}],
-            "msSBK-33-56_S56_L001_R1_001.fastq": [L_fuzzy_search_out, R_fuzzy_search_out, {key: edits_dict[key] for key in ("G10A",)}],
-            "msSBK-33-57_S57_L001_R1_001.fastq": [L_fuzzy_search_out, R_fuzzy_search_out, {key: edits_dict[key] for key in ("C19T",)}],
-            "msSBK-33-58_S58_L001_R1_001.fastq": [L_fuzzy_search_out, R_fuzzy_search_out, {key: edits_dict[key] for key in ("C28T",)}],
-            "msSBK-33-59_S59_L001_R1_001.fastq": [L_fuzzy_search_out, R_fuzzy_search_out, {key: edits_dict[key] for key in ("T37C",)}],
-            "msSBK-33-60_S60_L001_R1_001.fastq": [L_fuzzy_search_out, R_fuzzy_search_out, {key: edits_dict[key] for key in ("C55T",)}],
-            "msSBK-33-61_S61_L001_R1_001.fastq": [L_fuzzy_search_out, R_fuzzy_search_out, {key: edits_dict[key] for key in ("C64T",)}],
-            "msSBK-33-62_S62_L001_R1_001.fastq": [L_fuzzy_search_out, R_fuzzy_search_out, {key: edits_dict[key] for key in ("C73T",)}],
-            "msSBK-33-63_S63_L001_R1_001.fastq": [L_fuzzy_search_out, R_fuzzy_search_out, {key: edits_dict[key] for key in ("C82T",)}],
-            "msSBK-33-64_S64_L001_R1_001.fastq": [L_fuzzy_search_out, R_fuzzy_search_out, {key: edits_dict[key] for key in ("C88T",)}],
-            "msSBK-33-65_S65_L001_R1_001.fastq": [stop_L_fuzzy_search_out, stop_R_fuzzy_search_out, stop_edits_dict],
-            "msSBK-33-66_S66_L001_R1_001.fastq": [L_fuzzy_search_out, R_fuzzy_search_out, central_edits_dict],
-            "msSBK-33-67_S67_L001_R1_001.fastq": [L_fuzzy_search_out, R_fuzzy_search_out, {key: edits_dict[key] for key in ("C46T", "C4T")}],
-            "msSBK-33-68_S68_L001_R1_001.fastq": [L_fuzzy_search_out, R_fuzzy_search_out, {key: edits_dict[key] for key in ("C46T", "G10A")}],
-            "msSBK-33-69_S69_L001_R1_001.fastq": [L_fuzzy_search_out, R_fuzzy_search_out, {key: edits_dict[key] for key in ("C46T", "C19T")}],
-            "msSBK-33-70_S70_L001_R1_001.fastq": [L_fuzzy_search_out, R_fuzzy_search_out, {key: edits_dict[key] for key in ("C46T", "C28T")}],
-            "msSBK-33-71_S71_L001_R1_001.fastq": [L_fuzzy_search_out, R_fuzzy_search_out, {key: edits_dict[key] for key in ("C46T", "T37C")}],
-            "msSBK-33-72_S72_L001_R1_001.fastq": [L_fuzzy_search_out, R_fuzzy_search_out, {key: edits_dict[key] for key in ("C46T", "C55T")}],
-            "msSBK-33-73_S73_L001_R1_001.fastq": [L_fuzzy_search_out, R_fuzzy_search_out, {key: edits_dict[key] for key in ("C46T", "C64T")}],
-            "msSBK-33-74_S74_L001_R1_001.fastq": [L_fuzzy_search_out, R_fuzzy_search_out, {key: edits_dict[key] for key in ("C46T", "C73T")}],
-            "msSBK-33-76_S75_L001_R1_001.fastq": [L_fuzzy_search_out, R_fuzzy_search_out, {key: edits_dict[key] for key in ("C46T", "C88T")}],
-            "msSBK-33-77_S76_L001_R1_001.fastq": [L_fuzzy_search_out, R_fuzzy_search_out, {key: edits_dict[key] for key in ("C4T",)}],
-            "msSBK-33-78_S77_L001_R1_001.fastq": [L_fuzzy_search_out, R_fuzzy_search_out, {key: edits_dict[key] for key in ("G10A",)}],
-            "msSBK-33-79_S78_L001_R1_001.fastq": [L_fuzzy_search_out, R_fuzzy_search_out, {key: edits_dict[key] for key in ("C19T",)}],
-            "msSBK-33-80_S79_L001_R1_001.fastq": [L_fuzzy_search_out, R_fuzzy_search_out, {key: edits_dict[key] for key in ("C28T",)}],
-            "msSBK-33-81_S80_L001_R1_001.fastq": [L_fuzzy_search_out, R_fuzzy_search_out, {key: edits_dict[key] for key in ("T37C",)}],
-            "msSBK-33-82_S81_L001_R1_001.fastq": [L_fuzzy_search_out, R_fuzzy_search_out, {key: edits_dict[key] for key in ("C55T",)}],
-            "msSBK-33-83_S82_L001_R1_001.fastq": [L_fuzzy_search_out, R_fuzzy_search_out, {key: edits_dict[key] for key in ("C64T",)}],
-            "msSBK-33-84_S83_L001_R1_001.fastq": [L_fuzzy_search_out, R_fuzzy_search_out, {key: edits_dict[key] for key in ("C73T",)}],
-            "msSBK-33-85_S84_L001_R1_001.fastq": [L_fuzzy_search_out, R_fuzzy_search_out, {key: edits_dict[key] for key in ("C82T",)}],
-            "msSBK-33-86_S85_L001_R1_001.fastq": [L_fuzzy_search_out, R_fuzzy_search_out, {key: edits_dict[key] for key in ("C88T",)}],
-            "msSBK-33-87_S86_L001_R1_001.fastq": [stop_L_fuzzy_search_out, stop_R_fuzzy_search_out, stop_edits_dict],
-            "msSBK-33-88_S87_L001_R1_001.fastq": [L_fuzzy_search_out, R_fuzzy_search_out, central_edits_dict],}
+fastq_dict = {"msSBK-34-57_S57_L001_R1_001.fastq": [MOI_temp_L_fuzzy_search_out, MOI_temp_R_fuzzy_search_out, {key: edits_dict[key] for key in ("A45G",)}],
+            "msSBK-34-58_S58_L001_R1_001.fastq": [MOI_temp_L_fuzzy_search_out, MOI_temp_R_fuzzy_search_out, {key: edits_dict[key] for key in ("A45G",)}],
+            "msSBK-34-59_S59_L001_R1_001.fastq": [MOI_temp_L_fuzzy_search_out, MOI_temp_R_fuzzy_search_out, {key: edits_dict[key] for key in ("A45G",)}],
+            "msSBK-34-60_S60_L001_R1_001.fastq": [MOI_temp_L_fuzzy_search_out, MOI_temp_R_fuzzy_search_out, {key: edits_dict[key] for key in ("A45G",)}]} 
 
 
 # #IF ANALYZING CI MUT EDITING 
@@ -148,7 +69,7 @@ fastq_dict = {"msSBK-33-01_S1_L001_R1_001.fastq": [L_fuzzy_search_out, R_fuzzy_s
 
 
 # direct it to where the reads are
-data_loc = "./data/edit_placement_fastqs_unzipped/"  
+data_loc = "./data/BvsK_6-20-22/"  
 
 # handle is the opened fastq file
 # index is all of the reads that are in the fastq 
