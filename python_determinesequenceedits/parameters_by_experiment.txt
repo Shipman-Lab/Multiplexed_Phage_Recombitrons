@@ -1,0 +1,172 @@
+cI_mut_plaque2_seq: 
+	L_fuzzy_search: GGCAGTCAGGCGTTGGTGCT
+	R_fuzzy_search: ATCGCCAGAGAAATCTACGA
+	edit_position: T23A, A52T 
+
+##
+
+MOI_temp_opt: fwd primer santi's 
+    L_fuzzy_search: TGTAAGTTCCGCAATAACGT
+    R_fuzzy_search: CGATGTGCGCCAGCGGAGTC
+    edit_position: C46T
+
+##
+
+for edit placement: fwd primer 349
+	L_fuzzy_search: TATGACCAGCCAACGTCCGA
+	R_fuzzy_search: ACTTTCGCAGTAAATCCCAT
+	edit_position: C4T, G10A, C19T, C28T, T37C, C46T, C55T, C64T, C73T, C82T, C88T
+
+##
+
+for homology to donor: fwd primer 352 ***this editing region might be too long for high quality, edit is in the middle so technically don't need all the way to the end 
+	L_fuzzy_search: GGTTATAGCGGTCCGGCTGT
+	R_fuzzy_search: GAATCAGCGATTCTGGCGCA (outside of donor, if going to increase fuzziness) OR ATAACGTCGGCAACTTTGGC (inside donor) 
+	edit_position: depends on donor length, but same edit as C46T  
+
+##
+
+for recode length: fwd primer 349
+	L_fuzzy_search: TATGACCAGCCAACGTCCGA
+	R_fuzzy_search: ACTTTCGCAGTAAATCCCAT
+	edit_position: C4T, G10A, C19T, C28T, T37C, C46T, C55T, C64T, C73T, C82T, C88T
+
+##this is for 5-base fuzzy search 
+edits_dict = {
+		"C4T": {"L_fuzzy_inside": "GATAT", "R_fuzzy_inside": "ACGAA", "WT": "C", "mut": "T"},
+		"G10A": {"L_fuzzy_inside": "ACGAA", "R_fuzzy_inside": "GATAA", "WT": "G", "mut": "A"},
+		"C19T": {"L_fuzzy_inside": "AAATG", "R_fuzzy_inside": "AGCAA", "WT": "C", "mut": "T"},
+		"C28T": {"L_fuzzy_inside": "AAATG", "R_fuzzy_inside": "CTGAG", "WT": "C", "mut": "T"},
+		"T37C": {"L_fuzzy_inside": "AGCGG", "R_fuzzy_inside": "TGTAA", "WT": "T", "mut": "C"},
+		"C46T": {"L_fuzzy_inside": "AAGTT", "R_fuzzy_inside": "CGCAA", "WT": "C", "mut": "T"},
+		"C55T": {"L_fuzzy_inside": "AATAA", "R_fuzzy_inside": "GTCGG", "WT": "C", "mut": "T"},
+		"C64T": {"L_fuzzy_inside": "GGCAA", "R_fuzzy_inside": "TTTGG", "WT": "C", "mut": "T"},
+		"C73T": {"L_fuzzy_inside": "GGCGG", "R_fuzzy_inside": "TTCCT", "WT": "C", "mut": "T"},
+		"C82T": {"L_fuzzy_inside": "CTTTC", "R_fuzzy_inside": "ATTAA", "WT": "C", "mut": "T"},
+		"C88T": {"L_fuzzy_inside": "ATTAA", "R_fuzzy_inside": "AAACT", "WT": "C", "mut": "T"},
+		}
+
+## this is for 10-base fuzzy search 
+edits_dict = {
+		"C4T": {"L_fuzzy_inside": "CGTCCGATAT", "R_fuzzy_inside": "ACGAANGATA", "WT": "C", "mut": "T"},
+		"G10A": {"L_fuzzy_inside": "ATATNACGAA", "R_fuzzy_inside": "GATAAATGNA", "WT": "G", "mut": "A"},
+		"C19T": {"L_fuzzy_inside": "ANGATAAATG", "R_fuzzy_inside": "AGCAAATGNC", "WT": "C", "mut": "T"},
+		"C28T": {"L_fuzzy_inside": "GNAGCAAATG", "R_fuzzy_inside": "CTGAGCGGNT", "WT": "C", "mut": "T"},
+		"T37C": {"L_fuzzy_inside": "GNCTGAGCGG", "R_fuzzy_inside": "TGTAAGTTNC", "WT": "T", "mut": "C"},
+		"C46T": {"L_fuzzy_inside": "GNTGTAAGTT", "R_fuzzy_inside": "CGCAATAANG", "WT": "C", "mut": "T"},
+		"C55T": {"L_fuzzy_inside": "TNCGCAATAA", "R_fuzzy_inside": "GTCGGCAANT", "WT": "C", "mut": "T"},
+		"C64T": {"L_fuzzy_inside": "ANGTCGGCAA", "R_fuzzy_inside": "TTTGGCGGNT", "WT": "C", "mut": "T"},
+		"C73T": {"L_fuzzy_inside": "ANTTTGGCGG", "R_fuzzy_inside": "TTCCTTTCNA", "WT": "C", "mut": "T"},
+		"C82T": {"L_fuzzy_inside": "GNTTCCTTTC", "R_fuzzy_inside": "ATTAANAAAC", "WT": "C", "mut": "T"},
+		"C88T": {"L_fuzzy_inside": "TTTCNATTAA", "R_fuzzy_inside": "AAACTTTCGC", "WT": "C", "mut": "T"},
+		}
+
+fastq_dict = {"msSBK-32-20_S20_L001_R1_001.fastq": ["TATGACCAGCCAACGTCC", "TTCGCAGTAAATCCCATG"],
+              "msSBK-32-43_S43_L001_R1_001.fastq": ["TATGACCAGCCAACGTCC", "TTCGCAGTAAATCCCATG"],
+              "msSBK-32-21_S21_L001_R1_001.fastq": ["TATGACCAGCCAACGTCC", "TTCGCAGTAAATCCCATG"],
+              "msSBK-32-44_S44_L001_R1_001.fastq": ["TATGACCAGCCAACGTCC", "TTCGCAGTAAATCCCATG"],
+              "msSBK-32-22_S22_L001_R1_001.fastq": ["TATGACCAGCCAACGTCC", "TTCGCAGTAAATCCCATG"],   
+              "msSBK-32-45_S45_L001_R1_001.fastq": ["TATGACCAGCCAACGTCC", "TTCGCAGTAAATCCCATG"],
+              "msSBK-32-23_S23_L001_R1_001.fastq": ["TATGACCAGCCAACGTCC", "TTCGCAGTAAATCCCATG"],   
+              "msSBK-32-46_S46_L001_R1_001.fastq": ["TATGACCAGCCAACGTCC", "TTCGCAGTAAATCCCATG"],
+              "msSBK-32-24_S24_L001_R1_001.fastq": ["TATGACCAGCCAACGTCC", "TTCGCAGTAAATCCCATG"],   
+              "msSBK-32-52_S52_L001_R1_001.fastq": ["TATGACCAGCCAACGTCC", "TTCGCAGTAAATCCCATG"],
+              "msSBK-32-31_S31_L001_R1_001.fastq": ["TATGACCAGCCAACGTCC", "TTCGCAGTAAATCCCATG"],   
+              "msSBK-32-53_S53_L001_R1_001.fastq": ["TATGACCAGCCAACGTCC", "TTCGCAGTAAATCCCATG"],
+              "msSBK-32-32_S32_L001_R1_001.fastq": ["TATGACCAGCCAACGTCC", "TTCGCAGTAAATCCCATG"],   
+              "msSBK-32-55_S55_L001_R1_001.fastq": ["TATGACCAGCCAACGTCC", "TTCGCAGTAAATCCCATG"],
+              "msSBK-32-33_S33_L001_R1_001.fastq": ["TATGACCAGCCAACGTCC", "TTCGCAGTAAATCCCATG"],   
+              "msSBK-32-60_S60_L001_R1_001.fastq": ["TATGACCAGCCAACGTCC", "TTCGCAGTAAATCCCATG"],
+              "msSBK-32-34_S34_L001_R1_001.fastq": ["TATGACCAGCCAACGTCC", "TTCGCAGTAAATCCCATG"],   
+              "msSBK-32-61_S61_L001_R1_001.fastq": ["TATGACCAGCCAACGTCC", "TTCGCAGTAAATCCCATG"],
+              "msSBK-32-35_S35_L001_R1_001.fastq": ["TATGACCAGCCAACGTCC", "TTCGCAGTAAATCCCATG"],   
+              "msSBK-32-62_S62_L001_R1_001.fastq": ["TATGACCAGCCAACGTCC", "TTCGCAGTAAATCCCATG"],
+              "msSBK-32-42_S42_L001_R1_001.fastq": ["TATGACCAGCCAACGTCC", "TTCGCAGTAAATCCCATG"]}
+           ##these are 18b long, since the inside fuzzy search goes off the donor for the first and last - they are too close to the end
+
+
+
+#recode parameters 
+central_edits_dict = {key: edits_dict[key] for key in ("C46T",)}
+L1_R1_edits_dict = {key: edits_dict[key] for key in ("T37C", "C46T", "C55T")}
+L2_R2_edits_dict = {key: edits_dict[key] for key in ("C28T", "T37C", "C46T", "C55T", "C64T")}
+L3_R3_edits_dict = {key: edits_dict[key] for key in ("C19T", "C28T", "T37C", "C46T", "C55T", "C64T", "C73T")}
+L4_R4_edits_dict = {key: edits_dict[key] for key in ("G10A", "C19T", "C28T", "T37C", "C46T", "C55T", "C64T", "C73T", "C82T")}
+L5_R5_edits_dict = {key: edits_dict[key] for key in ("C4T", "G10A", "C19T", "C28T", "T37C", "C46T", "C55T", "C64T", "C73T", "C82T", "C88T")}
+
+#for homology, MOI, and temperature parameters use central_edits_dict (pSBK.164)
+
+#for edit placement, add keys individually 
+
+#outside fuzzy search for internal L-tail editor on lambda 
+L_fuzzy_search_out = "TATGACCAGCCAACGTCCGA"
+R_fuzzy_search_out = "ACTTTCGCAGTAAATCCCAT"
+
+
+#set up fastq_dict = {"fastq_name": [L_fuzzy_search_out, R_fuzzy_search_out]}
+fastq_dict = {"msSBK-32-20_S20_L001_R1_001_fortest.fastq": [L_fuzzy_search_out, R_fuzzy_search_out, central_edits_dict]}
+              # "msSBK-32-43_S43_L001_R1_001.fastq": ["TATGACCAGCCAACGTCCGA", "ACTTTCGCAGTAAATCCCAT"],
+              # "msSBK-32-21_S21_L001_R1_001.fastq": ["TATGACCAGCCAACGTCCGA", "ACTTTCGCAGTAAATCCCAT"],
+              # "msSBK-32-44_S44_L001_R1_001.fastq": ["TATGACCAGCCAACGTCCGA", "ACTTTCGCAGTAAATCCCAT"],
+              # "msSBK-32-22_S22_L001_R1_001.fastq": ["TATGACCAGCCAACGTCCGA", "ACTTTCGCAGTAAATCCCAT"],   
+              # "msSBK-32-45_S45_L001_R1_001.fastq": ["TATGACCAGCCAACGTCCGA", "ACTTTCGCAGTAAATCCCAT"],
+              # "msSBK-32-23_S23_L001_R1_001.fastq": ["TATGACCAGCCAACGTCCGA", "ACTTTCGCAGTAAATCCCAT"],   
+              # "msSBK-32-46_S46_L001_R1_001.fastq": ["TATGACCAGCCAACGTCCGA", "ACTTTCGCAGTAAATCCCAT"],
+              # "msSBK-32-24_S24_L001_R1_001.fastq": ["TATGACCAGCCAACGTCCGA", "ACTTTCGCAGTAAATCCCAT"],   
+              # "msSBK-32-52_S52_L001_R1_001.fastq": ["TATGACCAGCCAACGTCCGA", "ACTTTCGCAGTAAATCCCAT"],
+              # "msSBK-32-31_S31_L001_R1_001.fastq": ["TATGACCAGCCAACGTCCGA", "ACTTTCGCAGTAAATCCCAT"],   
+              # "msSBK-32-53_S53_L001_R1_001.fastq": ["TATGACCAGCCAACGTCCGA", "ACTTTCGCAGTAAATCCCAT"],
+              # "msSBK-32-32_S32_L001_R1_001.fastq": ["TATGACCAGCCAACGTCCGA", "ACTTTCGCAGTAAATCCCAT"],   
+              # "msSBK-32-55_S55_L001_R1_001.fastq": ["TATGACCAGCCAACGTCCGA", "ACTTTCGCAGTAAATCCCAT"],
+              # "msSBK-32-33_S33_L001_R1_001.fastq": ["TATGACCAGCCAACGTCCGA", "ACTTTCGCAGTAAATCCCAT"],   
+              # "msSBK-32-60_S60_L001_R1_001.fastq": ["TATGACCAGCCAACGTCCGA", "ACTTTCGCAGTAAATCCCAT"],
+              # "msSBK-32-34_S34_L001_R1_001.fastq": ["TATGACCAGCCAACGTCCGA", "ACTTTCGCAGTAAATCCCAT"],   
+              # "msSBK-32-61_S61_L001_R1_001.fastq": ["TATGACCAGCCAACGTCCGA", "ACTTTCGCAGTAAATCCCAT"],
+              # "msSBK-32-35_S35_L001_R1_001.fastq": ["TATGACCAGCCAACGTCCGA", "ACTTTCGCAGTAAATCCCAT"],   
+              # "msSBK-32-62_S62_L001_R1_001.fastq": ["TATGACCAGCCAACGTCCGA", "ACTTTCGCAGTAAATCCCAT"],
+              # "msSBK-32-42_S42_L001_R1_001.fastq": ["TATGACCAGCCAACGTCCGA", "ACTTTCGCAGTAAATCCCAT"]}
+
+
+
+# #edit placement parameters
+#     #single spanning edit
+# L5_edits_dict = {key: edits_dict[key] for key in ("C4T")} 
+# L4_edits_dict = {key: edits_dict[key] for key in ("G10A")}
+# L3_edits_dict = {key: edits_dict[key] for key in ("C19T")}
+# L2_edits_dict = {key: edits_dict[key] for key in ("C28T")}
+# L1_edits_dict = {key: edits_dict[key] for key in ("T37C")}
+# central_edits_dict
+# R1_edits_dict = {key: edits_dict[key] for key in ("C55T")}
+# R2_edits_dict = {key: edits_dict[key] for key in ("C64T")}
+# R3_edits_dict = {key: edits_dict[key] for key in ("C73T")}
+# R4_edits_dict = {key: edits_dict[key] for key in ("C82T")}
+# R5_edits_dict = {key: edits_dict[key] for key in ("C88T")} 
+
+#     #spanning edit + central edit 
+# L5_central_edits_dict = {key: edits_dict[key] for key in ("C4T", "C46T")} 
+# L4_central_edits_dict = {key: edits_dict[key] for key in ("G10A", "C46T")}
+# L3_central_edits_dict = {key: edits_dict[key] for key in ("C19T", "C46T")}
+# L2_central_edits_dict = {key: edits_dict[key] for key in ("C28T", "C46T")}
+# L1_central_edits_dict = {key: edits_dict[key] for key in ("T37C", "C46T")}
+# central_edits_dict
+# R1_central_edits_dict = {key: edits_dict[key] for key in ("C55T", "C46T")}
+# R2_central_edits_dict = {key: edits_dict[key] for key in ("C64T", "C46T")}
+# R3_central_edits_dict = {key: edits_dict[key] for key in ("C73T", "C46T")}
+# R4_central_edits_dict = {key: edits_dict[key] for key in ("C82T", "C46T")}
+# R5_central_edits_dict = {key: edits_dict[key] for key in ("C88T", "C46T")} 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
