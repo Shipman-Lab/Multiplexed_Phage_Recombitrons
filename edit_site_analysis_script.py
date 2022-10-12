@@ -78,8 +78,6 @@ for root, dirs, files in os.walk(run_path):
                                 outcomes_dict[extract_and_match(read, L_outside, R_outside, L_inside,
                                                                 R_inside, wt_nt, edited_nt)] += read_counter[read]
                     # put into output df
-                    import pdb
-                    pdb.set_trace()
                     index = outcome_df.index[outcome_df["run_id"] == fastq_name]
                     if len(index) != 1:
                         raise ValueError("There is more than one row in the outcome df with the same MiSeq run id")
