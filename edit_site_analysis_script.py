@@ -43,7 +43,6 @@ outcome_df["rep"] = outcome_df["variable"].str[-1]
 outcome_df = outcome_df.rename(columns={"value": "run_id"})
 outcome_df[["wt", "edited", "unmatched_region", "unmatched_edit_nt"]] = np.NaN
 run_ids = outcome_df["run_id"].dropna()
-print(run_ids)
 
 for root, dirs, files in os.walk(run_path):
     for directory in dirs:
@@ -54,8 +53,6 @@ for root, dirs, files in os.walk(run_path):
             # match to file key
             for fastq_name in run_ids:
                 if fastq_name in name:
-                    import pdb
-                    pdb.set_trace()
                     print("working on %s" %fastq_name)
                     start_time = time.time()
                     outcomes_dict = {'wt':0,'edited':0,'unmatched_region':0,'unmatched_edit_nt':0}
@@ -70,6 +67,8 @@ for root, dirs, files in os.walk(run_path):
                             for record in SeqIO.parse(handle, "fastq"):
                                 all_reads_str.append(str(record.seq))
                             read_counter = Counter(all_reads_str)
+                            import pdb
+                            pdb.set_trace()
                             for read in read_counter:
                                 ### NEED TO FIGURE OUT BELOW LINE!
                                 outcomes_dict[extract_and_match(read, i, rep)] += read_counter[read]
