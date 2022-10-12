@@ -74,13 +74,13 @@ for root, dirs, files in os.walk(run_path):
                             for record in SeqIO.parse(handle, "fastq"):
                                 all_reads_str.append(str(record.seq))
                             read_counter = Counter(all_reads_str)
-                            import pdb
-                            pdb.set_trace()
                             for read in read_counter:
                                 ### NEED TO FIGURE OUT BELOW LINE!
                                 outcomes_dict[extract_and_match(read, L_outside, R_outside, L_inside,
                                                                 R_inside, wt_nt, edited_nt)] += read_counter[read]
-                        # put into output df
+                    # put into output df
+                    import pdb
+                    pdb.set_trace()
                     outcome_df.loc[outcome_df["run_id"] == fastq_name, ["wt", "edited", "unmatched_region", "unmatched_edit_nt"]] = outcomes_dict
                     print("---  processing took %s seconds ---" % (time.time() - start_time))
                     outcome_df.to_excel("msKDC001_summary_df_vers" + str(git_short_hash) + ".xlsx")
