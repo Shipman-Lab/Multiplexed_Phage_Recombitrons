@@ -42,6 +42,8 @@ outcome_df = file_key.melt(id_vars=["phage", "gene", "plasmid", "direction",
 outcome_df["rep"] = outcome_df["variable"].str[-1]
 outcome_df = outcome_df.rename(columns={"value": "run_id"})
 outcome_df[["wt", "edited", "unmatched_region", "unmatched_edit_nt"]] = np.NaN
+import pdb
+pdb.set_trace()
 
 for root, dirs, files in os.walk(run_path):
     for directory in dirs:
@@ -68,8 +70,6 @@ for root, dirs, files in os.walk(run_path):
                             read_counter = Counter(all_reads_str)
                             for read in read_counter:
                                 ### NEED TO FIGURE OUT BELOW LINE!
-                                import pdb
-                                pdb.set_trace()
                                 outcomes_dict[extract_and_match(read, i, rep)] += read_counter[read]
                         # put into output df
                 print("---  processing took %s seconds ---" % (time.time() - start_time))
