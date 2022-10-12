@@ -56,7 +56,7 @@ for root, dirs, files in os.walk(run_path):
                 if fastq_name in name:
                     print("working on %s" %fastq_name)
                     start_time = time.time()
-                    outcomes_dict = {'wt':0,'edited':0,'unmatched_region':0,'unmatched_edit_nt':0}
+                    outcomes_dict = {'wt':0, 'edited':0, 'unmatched_region':0, 'unmatched_edit_nt':0}
                     all_reads_str = []
                     read_counter = []
                     L_outside = outcome_df.loc[outcome_df["run_id"] == fastq_name, "L_outside"].values[0]
@@ -80,8 +80,6 @@ for root, dirs, files in os.walk(run_path):
                                                                 R_inside, wt_nt, edited_nt)] += read_counter[read]
                     # put into output df
                     outcome_df.loc[outcome_df["run_id"] == fastq_name, ["wt", "edited", "unmatched_region", "unmatched_edit_nt"]] = outcomes_dict
-                    import pdb
-                    pdb.set_trace()
                     print("---  processing took %s seconds ---" % (time.time() - start_time))
                     outcome_df.to_excel("msKDC001_summary_df_vers" + str(git_short_hash) + ".xlsx")
 
