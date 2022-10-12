@@ -42,8 +42,6 @@ outcome_df = file_key.melt(id_vars=["phage", "gene", "plasmid", "direction",
 outcome_df["rep"] = outcome_df["variable"].str[-1]
 outcome_df = outcome_df.rename(columns={"value": "run_id"})
 outcome_df[["wt", "edited", "unmatched_region", "unmatched_edit_nt"]] = np.NaN
-import pdb
-pdb.set_trace()
 
 for root, dirs, files in os.walk(run_path):
     for directory in dirs:
@@ -54,6 +52,8 @@ for root, dirs, files in os.walk(run_path):
             # match to file key
             for fastq_name in outcome_df["run_id"]:
                 if fastq_name in name:
+                    import pdb
+                    pdb.set_trace()
                     print("working on %s" %fastq_name)
                     start_time = time.time()
                     outcomes_dict = {'wt':0,'edited':0,'unmatched_region':0,'unmatched_edit_nt':0}
@@ -72,8 +72,8 @@ for root, dirs, files in os.walk(run_path):
                                 ### NEED TO FIGURE OUT BELOW LINE!
                                 outcomes_dict[extract_and_match(read, i, rep)] += read_counter[read]
                         # put into output df
-                print("---  processing took %s seconds ---" % (time.time() - start_time))
-                outcome_df.to_excel("msKDC001_summary_df_vers" + str(git_short_hash) + ".xlsx")
+                    print("---  processing took %s seconds ---" % (time.time() - start_time))
+                    outcome_df.to_excel("msKDC001_summary_df_vers" + str(git_short_hash) + ".xlsx")
 
 
 # for i in samples.index:
