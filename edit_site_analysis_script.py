@@ -42,7 +42,7 @@ outcome_df = file_key.melt(id_vars=["phage", "gene", "plasmid", "direction",
 outcome_df["rep"] = outcome_df["variable"].str[-1]
 outcome_df = outcome_df.rename(columns={"value": "run_id"})
 outcome_df[["wt", "edited", "unmatched_region", "unmatched_edit_nt"]] = np.NaN
-run_ids = outcome_df["run_id"].dropna().values()
+run_ids = outcome_df["run_id"].dropna()
 print(run_ids)
 
 for root, dirs, files in os.walk(run_path):
