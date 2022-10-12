@@ -1,6 +1,6 @@
 import fuzzysearch
 
-def extract_and_match(read, index, rep, L_outside, R_outside, L_inside, R_inside, wt_nt, edited_nt):
+def extract_and_match(read, L_outside, R_outside, L_inside, R_inside, wt_nt, edited_nt):
     left_outside = fuzzysearch.find_near_matches(L_outside, read, max_l_dist=2)
     right_outside = fuzzysearch.find_near_matches(R_outside, read, max_l_dist=2)
     if len(left_outside) == 1 and len(right_outside) == 1:

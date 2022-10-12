@@ -58,6 +58,12 @@ for root, dirs, files in os.walk(run_path):
                     outcomes_dict = {'wt':0,'edited':0,'unmatched_region':0,'unmatched_edit_nt':0}
                     all_reads_str = []
                     read_counter = []
+                    L_outside = outcome_df.loc[outcome_df["run_id"] == fastq_name, "L_outside"]
+                    R_outside = outcome_df.loc[outcome_df["run_id"] == fastq_name, "R_outside"]
+                    L_inside = outcome_df.loc[outcome_df["run_id"] == fastq_name, "L_inside"]
+                    R_inside = outcome_df.loc[outcome_df["run_id"] == fastq_name, "R_inside"]
+                    wt_nt = outcome_df.loc[outcome_df["run_id"] == fastq_name, "wt_nt"]
+                    edited_nt = outcome_df.loc[outcome_df["run_id"] == fastq_name, "edited_nt"]
                     # need to go into the folder & unzip the file
                     full_path = os.path.join(root, directory, name)
                     with gzip.open(full_path, 'rb') as f_in:
@@ -71,8 +77,10 @@ for root, dirs, files in os.walk(run_path):
                             pdb.set_trace()
                             for read in read_counter:
                                 ### NEED TO FIGURE OUT BELOW LINE!
-                                outcomes_dict[extract_and_match(read, i, rep)] += read_counter[read]
+                                outcomes_dict[extract_and_match(read, L_outside, R_outside, L_inside,
+                                                                R_inside, wt_nt, edited_nt)] += read_counter[read]
                         # put into output df
+                    outcome_df.loc[outcome_df["run_id"] == fastq_name, ["wt", "edited", "unmatched_region", "unmatched_edit_nt"]] = outcomes_dict
                     print("---  processing took %s seconds ---" % (time.time() - start_time))
                     outcome_df.to_excel("msKDC001_summary_df_vers" + str(git_short_hash) + ".xlsx")
 
