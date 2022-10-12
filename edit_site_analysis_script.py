@@ -79,9 +79,9 @@ for root, dirs, files in os.walk(run_path):
                                 outcomes_dict[extract_and_match(read, L_outside, R_outside, L_inside,
                                                                 R_inside, wt_nt, edited_nt)] += read_counter[read]
                     # put into output df
+                    outcome_df.loc[outcome_df["run_id"] == fastq_name, ["wt", "edited", "unmatched_region", "unmatched_edit_nt"]] = outcomes_dict
                     import pdb
                     pdb.set_trace()
-                    outcome_df.loc[outcome_df["run_id"] == fastq_name, ["wt", "edited", "unmatched_region", "unmatched_edit_nt"]] = outcomes_dict
                     print("---  processing took %s seconds ---" % (time.time() - start_time))
                     outcome_df.to_excel("msKDC001_summary_df_vers" + str(git_short_hash) + ".xlsx")
 
