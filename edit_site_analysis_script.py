@@ -12,7 +12,7 @@ import gzip
 import shutil
 import time
 import os
-import np
+import numpy as np
 
 # check git hash & that there are no uncommitted changes
 status = subprocess.check_output(["git", "status"])
