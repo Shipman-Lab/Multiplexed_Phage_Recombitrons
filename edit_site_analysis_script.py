@@ -80,7 +80,11 @@ for root, dirs, files in os.walk(run_path):
                     # put into output df
                     import pdb
                     pdb.set_trace()
-                    outcome_df.loc[outcome_df["run_id"] == fastq_name, ["wt", "edited", "unmatched_region", "unmatched_edit_nt"]] = outcomes_dict
+                    index = outcome_df.index[outcome_df["run_id"] == fastq_name]
+                    if len(index) != 1:
+                        raise ValueError("There is more than one row in the outcome df with the same MiSeq run id")
+                    index = index[0]
+                    outcome_df.loc[index, ["wt", "edited", "unmatched_region", "unmatched_edit_nt"]] = outcomes_dict
                     print("---  processing took %s seconds ---" % (time.time() - start_time))
                     outcome_df.to_excel("msKDC001_summary_df_vers" + str(git_short_hash) + ".xlsx")
 
