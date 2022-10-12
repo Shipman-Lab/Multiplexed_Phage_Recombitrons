@@ -13,6 +13,7 @@ import shutil
 import time
 import os
 import numpy as np
+from edit_site_analysis_functions import extract_and_match
 
 # check git hash & that there are no uncommitted changes
 status = subprocess.check_output(["git", "status"])
@@ -58,12 +59,12 @@ for root, dirs, files in os.walk(run_path):
                     outcomes_dict = {'wt':0,'edited':0,'unmatched_region':0,'unmatched_edit_nt':0}
                     all_reads_str = []
                     read_counter = []
-                    L_outside = outcome_df.loc[outcome_df["run_id"] == fastq_name, "L_outside"]
-                    R_outside = outcome_df.loc[outcome_df["run_id"] == fastq_name, "R_outside"]
-                    L_inside = outcome_df.loc[outcome_df["run_id"] == fastq_name, "L_inside"]
-                    R_inside = outcome_df.loc[outcome_df["run_id"] == fastq_name, "R_inside"]
-                    wt_nt = outcome_df.loc[outcome_df["run_id"] == fastq_name, "wt_nt"]
-                    edited_nt = outcome_df.loc[outcome_df["run_id"] == fastq_name, "edited_nt"]
+                    L_outside = outcome_df.loc[outcome_df["run_id"] == fastq_name, "L_outside"].values[0]
+                    R_outside = outcome_df.loc[outcome_df["run_id"] == fastq_name, "R_outside"].values[0]
+                    L_inside = outcome_df.loc[outcome_df["run_id"] == fastq_name, "L_inside"].values[0]
+                    R_inside = outcome_df.loc[outcome_df["run_id"] == fastq_name, "R_inside"].values[0]
+                    wt_nt = outcome_df.loc[outcome_df["run_id"] == fastq_name, "wt_nt"].values[0]
+                    edited_nt = outcome_df.loc[outcome_df["run_id"] == fastq_name, "edited_nt"].values[0]
                     # need to go into the folder & unzip the file
                     full_path = os.path.join(root, directory, name)
                     with gzip.open(full_path, 'rb') as f_in:
