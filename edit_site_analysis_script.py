@@ -1,7 +1,3 @@
-"""
-BEFORE BEGINNING: mount the Shipman-Lab hive drive on your Mac (what is currently supported by this script)
-"""
-
 ##Import
 from Bio import SeqIO
 import pandas as pd
@@ -12,6 +8,7 @@ import gzip
 import shutil
 import time
 import os
+import argparse
 import numpy as np
 from edit_site_analysis_functions import extract_and_match
 
@@ -22,19 +19,22 @@ if "Changes not staged for commit" in str(status, 'utf-8').strip():
 git_short_hash = subprocess.check_output(['git', 'rev-parse', '--short', 'HEAD'])
 git_short_hash = str(git_short_hash, "utf-8").strip()
 
-if not os.path.isdir("/Volumes/Shipman-Lab/BaseSpace"):
-    raise ValueError("Make sure to mount the Shipman-Lab hive drive")
+parser = argparse.ArgumentParser()
+parser.add_argument("input", help = "Path to input csv")
+parser.add_argument("fastq", help = "Path to directory containing FASTQs")
+parser.add_argument("output", help = "Path to directory containing output csv")
+args = parser.parse_args()
 
 # load in file key
 # if you don't care about some of these, just leave them blank in the file key
-file_key = pd.read_excel("file_key.xlsx")\
+file_key = pd.read_excel(args.input)\
            [["phage", "gene", "plasmid", "direction",
            "edit_name", "genome_position", "wt_nt", 
            "edited_nt", "L_inside", "R_inside", 
            "L_outside", "R_outside",
            "rep_1", "rep_2", "rep_3",
            "rep_4", "rep_5"]]
-run_path = "/Volumes/Shipman-Lab/BaseSpace/msKDC_01-353873095/FASTQ_Generation_2022-06-04_18_18_55Z-570470901"
+#run_path = "/Volumes/Shipman-Lab/BaseSpace/msKDC_01-353873095/FASTQ_Generation_2022-06-04_18_18_55Z-570470901"
 outcome_df = file_key.melt(id_vars=["phage", "gene", "plasmid", "direction",
                                     "edit_name", "genome_position", "wt_nt",
                                     "edited_nt", "L_inside", "R_inside", "L_outside", "R_outside"],
@@ -45,7 +45,7 @@ outcome_df = outcome_df.rename(columns={"value": "run_id"})
 outcome_df[["wt", "edited", "unmatched_region", "unmatched_edit_nt"]] = np.NaN
 run_ids = outcome_df["run_id"].dropna()
 
-for root, dirs, files in os.walk(run_path):
+for root, dirs, files in os.walk(args.fastq):
     for directory in dirs:
         files = os.listdir(os.path.join(root, directory))
         for name in files:
@@ -84,7 +84,8 @@ for root, dirs, files in os.walk(run_path):
                     index = index[0]
                     outcome_df.loc[index, ["wt", "edited", "unmatched_region", "unmatched_edit_nt"]] = outcomes_dict
                     print("---  processing took %s seconds ---" % (time.time() - start_time))
-                    outcome_df.to_excel("msKDC001_summary_df_vers" + str(git_short_hash) + ".xlsx")
+                    #outcome_df.to_excel(os.path.join(args.output, "test_output.xlsx"))
+                    outcome_df.to_excel(os.path.join(args.output, "summary_df_vers" + str(git_short_hash) + ".xlsx"))
 
 
 # for i in samples.index:
