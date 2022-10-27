@@ -21,7 +21,7 @@ git_short_hash = str(git_short_hash, "utf-8").strip()
 
 parser = argparse.ArgumentParser()
 parser.add_argument("input", help = "Path to input csv")
-parser.add_argument("fastq", help = "Path to directory containing FASTQs")
+parser.add_argument("fastq", help = "Path to directory containing sequencing reads")
 parser.add_argument("output", help = "Path to directory containing output csv")
 args = parser.parse_args()
 
