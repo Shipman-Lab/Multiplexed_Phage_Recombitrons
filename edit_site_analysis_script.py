@@ -20,30 +20,23 @@ git_short_hash = subprocess.check_output(['git', 'rev-parse', '--short', 'HEAD']
 git_short_hash = str(git_short_hash, "utf-8").strip()
 
 parser = argparse.ArgumentParser()
-parser.add_argument("input", help = "Path to input csv")
+parser.add_argument("input", help = "Path to input excel file")
 parser.add_argument("fastq", help = "Path to directory containing sequencing reads")
 parser.add_argument("output", help = "Path to directory containing output csv")
 args = parser.parse_args()
 
-# load in file key
-# if you don't care about some of these, just leave them blank in the file key
-file_key = pd.read_excel(args.input)\
-           [["phage", "gene", "plasmid", "direction",
-           "edit_name", "genome_position", "wt_nt", 
+# load in edits key
+# if you don't care about some of these, just leave them blank in the edits key
+edits_key = pd.read_excel("edits_key.xlsx")\
+           [["edit_name", "strain", "gene", "plasmid",
+           "direction", "genome_position", "wt_nt", 
            "edited_nt", "L_inside", "R_inside", 
-           "L_outside", "R_outside",
-           "rep_1", "rep_2", "rep_3",
-           "rep_4", "rep_5"]]
-#run_path = "/Volumes/Shipman-Lab/BaseSpace/msKDC_01-353873095/FASTQ_Generation_2022-06-04_18_18_55Z-570470901"
-outcome_df = file_key.melt(id_vars=["phage", "gene", "plasmid", "direction",
-                                    "edit_name", "genome_position", "wt_nt",
-                                    "edited_nt", "L_inside", "R_inside", "L_outside", "R_outside"],
-                           value_vars=["rep_1", "rep_2", "rep_3", "rep_4", "rep_5"])
-# assumes you have 9 or fewer replicates per type!!!
-outcome_df["rep"] = outcome_df["variable"].str[-1]
-outcome_df = outcome_df.rename(columns={"value": "run_id"})
-outcome_df[["wt", "edited", "unmatched_region", "unmatched_edit_nt"]] = np.NaN
-run_ids = outcome_df["run_id"].dropna()
+           "L_outside", "R_outside"]]
+# load in file key
+# multiple edit names are grouped in the same cell, delimited by commas
+file_key = pd.read_excel(args.input)[["run_id", "edit_name"]]
+# create output list (each row of the list will be results for a unique run_id + edit_name pair)
+output_list = []
 
 for root, dirs, files in os.walk(args.fastq):
     for directory in dirs:
@@ -52,40 +45,50 @@ for root, dirs, files in os.walk(args.fastq):
             if "fastq.gz" not in name:
                 continue
             # match to file key
-            for fastq_name in run_ids:
-                if fastq_name in name:
-                    print("working on %s" %fastq_name)
+            for row in file_key.iterrows():
+                run_id = row[1]['run_id']
+                if run_id in name or '-'.join(run_id.split('_')) in name:
+                    print("working on %s" % run_id)
                     start_time = time.time()
-                    outcomes_dict = {'wt':0, 'edited':0, 'unmatched_region':0, 'unmatched_edit_nt':0}
-                    all_reads_str = []
-                    read_counter = []
-                    L_outside = outcome_df.loc[outcome_df["run_id"] == fastq_name, "L_outside"].values[0]
-                    R_outside = outcome_df.loc[outcome_df["run_id"] == fastq_name, "R_outside"].values[0]
-                    L_inside = outcome_df.loc[outcome_df["run_id"] == fastq_name, "L_inside"].values[0]
-                    R_inside = outcome_df.loc[outcome_df["run_id"] == fastq_name, "R_inside"].values[0]
-                    wt_nt = outcome_df.loc[outcome_df["run_id"] == fastq_name, "wt_nt"].values[0]
-                    edited_nt = outcome_df.loc[outcome_df["run_id"] == fastq_name, "edited_nt"].values[0]
-                    # need to go into the folder & unzip the file
-                    full_path = os.path.join(root, directory, name)
-                    with gzip.open(full_path, 'rb') as f_in:
-                        with open(full_path[:-3], 'wb') as f_out:
-                            shutil.copyfileobj(f_in, f_out)
-                        with open(full_path[:-3]) as handle:
-                            for record in SeqIO.parse(handle, "fastq"):
-                                all_reads_str.append(str(record.seq))
-                            read_counter = Counter(all_reads_str)
-                            for read in read_counter:
-                                outcomes_dict[extract_and_match(read, L_outside, R_outside, L_inside,
-                                                                R_inside, wt_nt, edited_nt)] += read_counter[read]
-                    # put into output df
-                    index = outcome_df.index[outcome_df["run_id"] == fastq_name]
-                    if len(index) != 1:
-                        raise ValueError("There is more than one row in the outcome df with the same MiSeq run id")
-                    index = index[0]
-                    outcome_df.loc[index, ["wt", "edited", "unmatched_region", "unmatched_edit_nt"]] = outcomes_dict
+                    for edit_name in [x.strip() for x in row[1]['edit_name'].split(',')]: 
+                        edit_ix = edits_key[edits_key['edit_name'] == edit_name].index[0]
+                        outcomes_dict = {'wt':0, 'edited':0, 'unmatched_region':0, 'unmatched_edit_nt':0}
+                        all_reads_str = []
+                        read_counter = []
+                        L_outside = edits_key.iloc[edit_ix]['L_outside']
+                        R_outside = edits_key.iloc[edit_ix]['R_outside']
+                        L_inside = edits_key.iloc[edit_ix]['L_inside']
+                        R_inside = edits_key.iloc[edit_ix]['R_inside']
+                        wt_nt = edits_key.iloc[edit_ix]['wt_nt']
+                        edited_nt = edits_key.iloc[edit_ix]['edited_nt']
+                        # need to go into the folder & unzip the file
+                        full_path = os.path.join(root, directory, name)
+                        with gzip.open(full_path, 'rb') as f_in:
+                            with open(full_path[:-3], 'wb') as f_out:
+                                shutil.copyfileobj(f_in, f_out)
+                            with open(full_path[:-3]) as handle:
+                                for record in SeqIO.parse(handle, "fastq"):
+                                    all_reads_str.append(str(record.seq))
+                                read_counter = Counter(all_reads_str)
+                                for read in read_counter:
+                                    outcomes_dict[extract_and_match(read, L_outside, R_outside, L_inside,
+                                                                    R_inside, wt_nt, edited_nt)] += read_counter[read]
+                        # put into output list
+                        output_list.append([run_id, edit_name, edits_key.iloc[edit_ix]['strain'], 
+                                            edits_key.iloc[edit_ix]['gene'], edits_key.iloc[edit_ix]['plasmid'],
+                                            edits_key.iloc[edit_ix]['direction'], edits_key.iloc[edit_ix]['genome_position'], 
+                                            wt_nt, edited_nt, L_inside, R_inside, L_outside, R_outside, len(all_reads_str),
+                                            outcomes_dict['wt'], outcomes_dict['edited'], outcomes_dict['unmatched_region'],
+                                            outcomes_dict['unmatched_edit_nt'], 100.*outcomes_dict['edited']/len(all_reads_str)])
                     print("---  processing took %s seconds ---" % (time.time() - start_time))
-                    #outcome_df.to_excel(os.path.join(args.output, "test_output.xlsx"))
-                    outcome_df.to_excel(os.path.join(args.output, "summary_df_vers" + str(git_short_hash) + ".xlsx"))
+
+# create output df
+output_df = pd.DataFrame(output_list, columns=["run_id", "edit_name", "strain", "gene", "plasmid",
+                                    "direction", "genome_position", "wt_nt",
+                                    "edited_nt", "L_inside", "R_inside", "L_outside", "R_outside", "total_reads",
+                                    "wt", "edited", "unmatched_region", "unmatched_edit_nt", "perc_edited"])
+#output_df.to_csv(os.path.join(args.output, "test_output.csv"))
+outcome_df.to_csv(os.path.join(args.output, "summary_df_vers" + str(git_short_hash) + ".csv"))
 
 
 # for i in samples.index:
