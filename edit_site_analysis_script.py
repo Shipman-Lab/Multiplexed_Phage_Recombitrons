@@ -1,5 +1,12 @@
 """
 BEFORE BEGINNING: mount the Shipman-Lab hive drive on your Mac (what is currently supported by this script)
+
+TO RUN:
+    change everything between the two hashes to match your current run
+        (note: you must include your run information in the file_key.xlsx file tracked by GitHub)
+    commit this file after saving & changes - the code will not run with uncommitted changes
+    navigate to this folder in terminal
+    python3 -m edit_site_analysis_script
 """
 
 ##Import
@@ -15,15 +22,23 @@ import os
 import numpy as np
 from edit_site_analysis_functions import extract_and_match
 
+## CHANGE EVERYTHING (IF NEEDED) BETWEEN THE TWO HASHES
+# run path must currently point to the fastq generation folder: known bug
+run_path = "/Volumes/Shipman-Lab/BaseSpace/msKDC_01-353873095/FASTQ_Generation_2022-06-04_18_18_55Z-570470901"
+run_name = "msAGK_01"
+# this check is to get rid of the silent error where the script can't
+# find your files because the Hive isn't mounted
+# needs to be changed to the correct path if you're not on a Mac
+if not os.path.isdir("/Volumes/Shipman-Lab/BaseSpace"):
+    raise ValueError("Make sure to mount the Shipman-Lab hive drive")
+## END CHANGE REGION
+
 # check git hash & that there are no uncommitted changes
 status = subprocess.check_output(["git", "status"])
 if "Changes not staged for commit" in str(status, 'utf-8').strip():
     raise ValueError("Uncommitted changes - please commit before running")
 git_short_hash = subprocess.check_output(['git', 'rev-parse', '--short', 'HEAD'])
 git_short_hash = str(git_short_hash, "utf-8").strip()
-
-if not os.path.isdir("/Volumes/Shipman-Lab/BaseSpace"):
-    raise ValueError("Make sure to mount the Shipman-Lab hive drive")
 
 # load in file key
 # if you don't care about some of these, just leave them blank in the file key
@@ -34,7 +49,6 @@ file_key = pd.read_excel("file_key.xlsx")\
            "L_outside", "R_outside",
            "rep_1", "rep_2", "rep_3",
            "rep_4", "rep_5"]]
-run_path = "/Volumes/Shipman-Lab/BaseSpace/msKDC_01-353873095/FASTQ_Generation_2022-06-04_18_18_55Z-570470901"
 outcome_df = file_key.melt(id_vars=["phage", "gene", "plasmid", "direction",
                                     "edit_name", "genome_position", "wt_nt",
                                     "edited_nt", "L_inside", "R_inside", "L_outside", "R_outside"],
@@ -84,7 +98,7 @@ for root, dirs, files in os.walk(run_path):
                     index = index[0]
                     outcome_df.loc[index, ["wt", "edited", "unmatched_region", "unmatched_edit_nt"]] = outcomes_dict
                     print("---  processing took %s seconds ---" % (time.time() - start_time))
-                    outcome_df.to_excel("msKDC001_summary_df_vers" + str(git_short_hash) + ".xlsx")
+                    outcome_df.to_excel("%s_summary_df_vers"%(run_name) + str(git_short_hash) + ".xlsx")
 
 
 # for i in samples.index:
