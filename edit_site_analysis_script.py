@@ -24,7 +24,7 @@ from edit_site_analysis_functions import extract_and_match
 
 ## CHANGE EVERYTHING (IF NEEDED) BETWEEN THE TWO HASHES
 # run path must currently point to the fastq generation folder: known bug
-run_path = "/Volumes/Shipman-Lab/BaseSpace/msKDC_01-353873095/FASTQ_Generation_2022-06-04_18_18_55Z-570470901"
+run_path = "/Volumes/Shipman-Lab/BaseSpace/msAGK_01-373062887/FASTQ_Generation_2022-11-18_21_44_13Z-631358730"
 run_name = "msAGK_01"
 # this check is to get rid of the silent error where the script can't
 # find your files because the Hive isn't mounted
