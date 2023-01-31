@@ -76,13 +76,11 @@ def run_single_nt_edit_analysis(run_path, run_name, file_key_path, fuzziness):
 
                         for read in records:
                             outcomes_dict[extract_and_match(read.seq, L_outside, R_outside, L_inside,
-                                                            R_inside, wt_nt, edited_nt, fuzziness=fuzziness)] += read_counter[read]
+                                                            R_inside, wt_nt, edited_nt, fuzziness=fuzziness)] += 1
                         # put into output df
-                        index = outcome_df.index[outcome_df["run_id"] == fastq_name]
                         if len(index) != 1:
                             raise ValueError("There is more than one row in the outcome df with the same MiSeq run id")
-                        index = index[0]
-                        outcome_df.loc[index, "total_num_reads"] = len(records)
-                        outcome_df.loc[index, ["wt", "edited", "unmatched_region", "unmatched_edit_nt"]] = outcomes_dict
+                        outcome_df.loc[barcode, "total_num_reads"] = len(records)
+                        outcome_df.loc[barcode, ["wt", "edited", "unmatched_region", "unmatched_edit_nt"]] = outcomes_dict
                         print("---  processing took %s seconds ---" % (time.time() - start_time))
                         outcome_df.to_excel("%s_summary_df_vers"%(run_name) + str(git_short_hash) + ".xlsx")
