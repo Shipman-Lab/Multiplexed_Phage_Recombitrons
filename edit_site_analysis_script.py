@@ -72,14 +72,11 @@ def run_single_nt_edit_analysis(run_path, run_name, file_key_path, fuzziness):
                         records = list(SeqIO.parse(full_path[:-3], "fastq"))
 
                         outcomes_dict = {'wt':0, 'edited':0, 'unmatched_region':0, 'unmatched_edit_nt':0}
-                        # need to go into the folder & unzip the file
 
                         for read in records:
                             outcomes_dict[extract_and_match(read.seq, L_outside, R_outside, L_inside,
                                                             R_inside, wt_nt, edited_nt, fuzziness=fuzziness)] += 1
                         # put into output df
-                        if len(index) != 1:
-                            raise ValueError("There is more than one row in the outcome df with the same MiSeq run id")
                         outcome_df.loc[barcode, "total_num_reads"] = len(records)
                         outcome_df.loc[barcode, ["wt", "edited", "unmatched_region", "unmatched_edit_nt"]] = outcomes_dict
                         print("---  processing took %s seconds ---" % (time.time() - start_time))
