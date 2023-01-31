@@ -22,99 +22,68 @@ import os
 import numpy as np
 from edit_site_analysis_functions import extract_and_match
 
-## CHANGE EVERYTHING (IF NEEDED) BETWEEN THE TWO HASHES
-# run path must currently point to the fastq generation folder: known bug
-run_path = "/Volumes/Shipman-Lab/BaseSpace/msMRM_04-376729312/FASTQ_Generation_2022-12-22_17_05_43Z-642084446"
-run_name = "msMRM_04"
-# this check is to get rid of the silent error where the script can't
-# find your files because the Hive isn't mounted
-# needs to be changed to the correct path if you're not on a Mac
-if not os.path.isdir("/Volumes/Shipman-Lab/BaseSpace"):
-    raise ValueError("Make sure to mount the Shipman-Lab hive drive")
-## END CHANGE REGION
+def run_single_nt_edit_analysis(run_path, run_name, file_key_path)
+    if not os.path.isdir(run_path):
+        raise ValueError("Input run path is not a directory!")
 
-# check git hash & that there are no uncommitted changes
-status = subprocess.check_output(["git", "status"])
-if "Changes not staged for commit" in str(status, 'utf-8').strip():
-    raise ValueError("Uncommitted changes - please commit before running")
-git_short_hash = subprocess.check_output(['git', 'rev-parse', '--short', 'HEAD'])
-git_short_hash = str(git_short_hash, "utf-8").strip()
+    # check git hash & that there are no uncommitted changes
+    status = subprocess.check_output(["git", "status"])
+    if "Changes not staged for commit" in str(status, 'utf-8').strip():
+        raise ValueError("Uncommitted changes - please commit before running")
+    git_short_hash = subprocess.check_output(['git', 'rev-parse', '--short', 'HEAD'])
+    git_short_hash = str(git_short_hash, "utf-8").strip()
 
-# load in file key
-# if you don't care about some of these, just leave them blank in the file key
-file_key = pd.read_excel("file_key.xlsx")\
-           [["phage", "gene", "plasmid", "direction",
-           "edit_name", "genome_position", "wt_nt", 
-           "edited_nt", "L_inside", "R_inside", 
-           "L_outside", "R_outside",
-           "rep_1", "rep_2", "rep_3",
-           "rep_4", "rep_5"]]
-outcome_df = file_key.melt(id_vars=["phage", "gene", "plasmid", "direction",
-                                    "edit_name", "genome_position", "wt_nt",
-                                    "edited_nt", "L_inside", "R_inside", "L_outside", "R_outside"],
-                           value_vars=["rep_1", "rep_2", "rep_3", "rep_4", "rep_5"])
-# assumes you have 9 or fewer replicates per type!!!
-outcome_df["rep"] = outcome_df["variable"].str[-1]
-outcome_df = outcome_df.rename(columns={"value": "run_id"})
-outcome_df[["wt", "edited", "unmatched_region", "unmatched_edit_nt"]] = np.NaN
-run_ids = outcome_df["run_id"].dropna()
+    # load in file key
+    # if you don't care about some of these, just leave them blank in the file key
+    file_key = pd.read_excel(file_key_path, converters={'barcode_num': str})
+    file_key = file_key.set_index("barcode_num")
 
-for root, dirs, files in os.walk(run_path):
-    for directory in dirs:
-        files = os.listdir(os.path.join(root, directory))
-        for name in files:
-            if "fastq.gz" not in name:
-                continue
-            # match to file key
-            for fastq_name in run_ids:
-                if fastq_name in name:
-                    print("working on %s" %fastq_name)
+    outcome_df = file_key[["construct", "rep", "type", "gene",
+                           "plasmid", "direction", "edit_name",
+                           "genome_position"]].copy()
+    outcome_df[["total_num_reads", "wt", "edited", "unmatched_region", "unmatched_edit_nt"]] = np.NaN
+
+    for root, dirs, files in os.walk(run_path):
+        # find folder with run_id
+        for directory in dirs:
+            for barcode in file_key.index:
+                construct = file_key.loc[barcode, "construct"]
+                rep = file_key.loc[barcode, "rep"]
+                if barcode in directory:
+                    print("----------------------------")
+                    print("working on construct %s, rep %s"%(construct, rep))
                     start_time = time.time()
-                    outcomes_dict = {'wt':0, 'edited':0, 'unmatched_region':0, 'unmatched_edit_nt':0}
-                    all_reads_str = []
-                    read_counter = []
-                    L_outside = outcome_df.loc[outcome_df["run_id"] == fastq_name, "L_outside"].values[0]
-                    R_outside = outcome_df.loc[outcome_df["run_id"] == fastq_name, "R_outside"].values[0]
-                    L_inside = outcome_df.loc[outcome_df["run_id"] == fastq_name, "L_inside"].values[0]
-                    R_inside = outcome_df.loc[outcome_df["run_id"] == fastq_name, "R_inside"].values[0]
-                    wt_nt = outcome_df.loc[outcome_df["run_id"] == fastq_name, "wt_nt"].values[0]
-                    edited_nt = outcome_df.loc[outcome_df["run_id"] == fastq_name, "edited_nt"].values[0]
-                    # need to go into the folder & unzip the file
-                    full_path = os.path.join(root, directory, name)
-                    with gzip.open(full_path, 'rb') as f_in:
-                        with open(full_path[:-3], 'wb') as f_out:
-                            shutil.copyfileobj(f_in, f_out)
-                        with open(full_path[:-3]) as handle:
-                            for record in SeqIO.parse(handle, "fastq"):
-                                all_reads_str.append(str(record.seq))
-                            read_counter = Counter(all_reads_str)
-                            for read in read_counter:
-                                outcomes_dict[extract_and_match(read, L_outside, R_outside, L_inside,
-                                                                R_inside, wt_nt, edited_nt)] += read_counter[read]
-                    # put into output df
-                    index = outcome_df.index[outcome_df["run_id"] == fastq_name]
-                    if len(index) != 1:
-                        raise ValueError("There is more than one row in the outcome df with the same MiSeq run id")
-                    index = index[0]
-                    outcome_df.loc[index, ["wt", "edited", "unmatched_region", "unmatched_edit_nt"]] = outcomes_dict
-                    print("---  processing took %s seconds ---" % (time.time() - start_time))
-                    outcome_df.to_excel("%s_summary_df_vers"%(run_name) + str(git_short_hash) + ".xlsx")
+                    barcode_dir = os.path.join(root, directory)
+                    fastqs = os.listdir(barcode_dir)
 
+                    L_inside = file_key.loc[barcode, "L_inside"]
+                    R_inside = file_key.loc[barcode, "R_inside"]
+                    L_outside = file_key.loc[barcode, "L_outside"]
+                    R_outside = file_key.loc[barcode, "R_outside"]
+                    wt_nt = file_key.loc[barcode, "wt_nt"]
+                    edited_nt = file_key.loc[barcode, "edited_nt"]
 
-# for i in samples.index:
-#     sample_i = int(i)
-#     outcomes_dict[i] = {}
-#     for rep in ["rep_1", "rep_2", "rep_3", "rep_4", "rep_5"]:
-#         outcomes_dict[i][rep]= {'wt':0,'edited':0,'unmatched_region':0,'unmatched_edit_nt':0}
-#         all_reads_str = []
-#         read_counter = []
-#         fastq_reads = "./%s_trimmed.fastq" % samples[rep][i]
-#         try:
-#             for seq_record in SeqIO.parse(fastq_reads, "fastq"):
-#                 all_reads_str.append(str(seq_record.seq))
-#             read_counter = Counter(all_reads_str)
-#             for read in read_counter:
-#                 outcomes_dict[sample_i][rep][extract_and_match(read,i,rep)] += read_counter[read]
-#             print(samples[rep][i])
-#         except IOError: #this happens when a file is missing
-#             print("%s missing" % samples[rep][i])
+                    for fastq in fastqs:
+                        if ("fastq.gz" not in fastq)::
+                            continue
+                        full_path = os.path.join(barcode_dir, fastq)
+                        with gzip.open(full_path, 'rb') as f_in:
+                            with open(full_path[:-3], 'wb') as f_out:
+                                shutil.copyfileobj(f_in, f_out)
+                        records = list(SeqIO.parse(full_path[:-3], "fastq"))
+
+                        outcomes_dict = {'wt':0, 'edited':0, 'unmatched_region':0, 'unmatched_edit_nt':0}
+                        # need to go into the folder & unzip the file
+
+                        for read in records:
+                            outcomes_dict[extract_and_match(read, L_outside, R_outside, L_inside,
+                                                            R_inside, wt_nt, edited_nt)] += read_counter[read]
+                        # put into output df
+                        index = outcome_df.index[outcome_df["run_id"] == fastq_name]
+                        if len(index) != 1:
+                            raise ValueError("There is more than one row in the outcome df with the same MiSeq run id")
+                        index = index[0]
+                        outcome_df.loc[index, "total_num_reads"] = len(records)
+                        outcome_df.loc[index, ["wt", "edited", "unmatched_region", "unmatched_edit_nt"]] = outcomes_dict
+                        print("---  processing took %s seconds ---" % (time.time() - start_time))
+                        outcome_df.to_excel("%s_summary_df_vers"%(run_name) + str(git_short_hash) + ".xlsx")
