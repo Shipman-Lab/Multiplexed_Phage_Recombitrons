@@ -65,6 +65,7 @@ def run_single_nt_edit_analysis(run_path, run_name, file_key_path, fuzziness):
                         if ("fastq" not in fastq):
                             continue
                         if ("fastq.gz" in fastq):
+                            continue
                         full_path = os.path.join(barcode_dir, fastq)
                         records = list(SeqIO.parse(full_path[:-3], "fastq"))
                         total_num_reads += len(records)
