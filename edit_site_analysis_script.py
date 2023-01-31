@@ -63,7 +63,7 @@ def run_single_nt_edit_analysis(run_path, run_name, file_key_path, fuzziness):
                     edited_nt = file_key.loc[barcode, "edited_nt"]
 
                     for fastq in fastqs:
-                        if ("fastq.gz" not in fastq)::
+                        if ("fastq.gz" not in fastq):
                             continue
                         full_path = os.path.join(barcode_dir, fastq)
                         with gzip.open(full_path, 'rb') as f_in:
