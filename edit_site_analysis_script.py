@@ -62,12 +62,10 @@ def run_single_nt_edit_analysis(run_path, run_name, file_key_path, fuzziness):
                     total_num_reads = 0
                     outcomes_dict = {'wt':0, 'edited':0, 'unmatched_region':0, 'unmatched_edit_nt':0}
                     for fastq in fastqs:
-                        if ("fastq.gz" not in fastq):
+                        if ("fastq" not in fastq):
                             continue
+                        if ("fastq.gz" in fastq):
                         full_path = os.path.join(barcode_dir, fastq)
-                        with gzip.open(full_path, 'rb') as f_in:
-                            with open(full_path[:-3], 'wb') as f_out:
-                                shutil.copyfileobj(f_in, f_out)
                         records = list(SeqIO.parse(full_path[:-3], "fastq"))
                         total_num_reads += len(records)
                         for read in records:
