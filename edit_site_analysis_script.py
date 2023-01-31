@@ -62,6 +62,7 @@ def run_single_nt_edit_analysis(run_path, run_name, file_key_path, fuzziness):
                     wt_nt = file_key.loc[barcode, "wt_nt"]
                     edited_nt = file_key.loc[barcode, "edited_nt"]
 
+                    outcomes_dict = {'wt':0, 'edited':0, 'unmatched_region':0, 'unmatched_edit_nt':0}
                     for fastq in fastqs:
                         if ("fastq.gz" not in fastq):
                             continue
@@ -71,13 +72,11 @@ def run_single_nt_edit_analysis(run_path, run_name, file_key_path, fuzziness):
                                 shutil.copyfileobj(f_in, f_out)
                         records = list(SeqIO.parse(full_path[:-3], "fastq"))
 
-                        outcomes_dict = {'wt':0, 'edited':0, 'unmatched_region':0, 'unmatched_edit_nt':0}
-
                         for read in records:
                             outcomes_dict[extract_and_match(read.seq, L_outside, R_outside, L_inside,
                                                             R_inside, wt_nt, edited_nt, fuzziness=fuzziness)] += 1
-                        # put into output df
-                        outcome_df.loc[barcode, "total_num_reads"] = len(records)
-                        outcome_df.loc[barcode, ["wt", "edited", "unmatched_region", "unmatched_edit_nt"]] = outcomes_dict
-                        print("---  processing took %s seconds ---" % (time.time() - start_time))
-                        outcome_df.to_excel("%s_summary_df_vers"%(run_name) + str(git_short_hash) + ".xlsx")
+                    # put into output df
+                    outcome_df.loc[barcode, "total_num_reads"] = len(records)
+                    outcome_df.loc[barcode, ["wt", "edited", "unmatched_region", "unmatched_edit_nt"]] = outcomes_dict
+                    outcome_df.to_excel("%s_summary_df_vers"%(run_name) + str(git_short_hash) + ".xlsx")
+                    print("---  processing took %s seconds ---" % (time.time() - start_time))
