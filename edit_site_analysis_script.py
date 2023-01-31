@@ -8,7 +8,6 @@ TO RUN:
     navigate to this folder in terminal
     python3 -m edit_site_analysis_script
 """
-
 ##Import
 from Bio import SeqIO
 import pandas as pd
