@@ -21,7 +21,7 @@ import os
 import numpy as np
 from edit_site_analysis_functions import extract_and_match
 
-def run_single_nt_edit_analysis(run_path, run_name, file_key_path, fuzziness)
+def run_single_nt_edit_analysis(run_path, run_name, file_key_path, fuzziness):
     if not os.path.isdir(run_path):
         raise ValueError("Input run path is not a directory!")
 
