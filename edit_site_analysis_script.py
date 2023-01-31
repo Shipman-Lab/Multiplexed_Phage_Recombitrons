@@ -21,7 +21,7 @@ import os
 import numpy as np
 from edit_site_analysis_functions import extract_and_match
 
-def run_single_nt_edit_analysis(run_path, run_name, file_key_path)
+def run_single_nt_edit_analysis(run_path, run_name, file_key_path, fuzziness)
     if not os.path.isdir(run_path):
         raise ValueError("Input run path is not a directory!")
 
@@ -76,7 +76,7 @@ def run_single_nt_edit_analysis(run_path, run_name, file_key_path)
 
                         for read in records:
                             outcomes_dict[extract_and_match(read, L_outside, R_outside, L_inside,
-                                                            R_inside, wt_nt, edited_nt)] += read_counter[read]
+                                                            R_inside, wt_nt, edited_nt, fuzziness=fuzziness)] += read_counter[read]
                         # put into output df
                         index = outcome_df.index[outcome_df["run_id"] == fastq_name]
                         if len(index) != 1:
