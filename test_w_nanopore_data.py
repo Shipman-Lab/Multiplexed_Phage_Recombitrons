@@ -21,17 +21,17 @@ def process_copied_nanopore_reads(seq):
 	return seq.replace("-", "")
 
 def test_edit_site_analysis():
-	R_inside = "CGCAATAACGTCGGCAACTTTGGCG"
-	L_inside = "GCAAATGCCTGAGCGGTTGTAAGTT"
+	L_inside = "GATAAATGCAGCAAATGCCTGAGCGGTTGTAAGTT"
+	R_inside = "CGCAATAACGTCGGCAACTTTGGCGGCTTCCTTTC"
 	assert extract_and_match(read=process_copied_nanopore_reads(test_seq_1),
 							 L_inside=L_inside, R_inside=R_inside,
 							 wt_nt="C", edited_nt="T", fuzziness=4) == "edited"
 	assert extract_and_match(read=process_copied_nanopore_reads(test_seq_2),
 							 L_inside=L_inside, R_inside=R_inside,
-							 wt_nt="C", edited_nt="T", fuzziness=4) == "edited"
+							 wt_nt="C", edited_nt="T", fuzziness=4) == "unmatched_region"
 	assert extract_and_match(read=process_copied_nanopore_reads(test_seq_3),
 							 L_inside=L_inside, R_inside=R_inside,
-							 wt_nt="C", edited_nt="T", fuzziness=4) == "edited"
+							 wt_nt="C", edited_nt="T", fuzziness=4) == "wt"
 	assert extract_and_match(read=process_copied_nanopore_reads(test_seq_4),
 							 L_inside=L_inside, R_inside=R_inside,
 							 wt_nt="C", edited_nt="T", fuzziness=4) == "edited"

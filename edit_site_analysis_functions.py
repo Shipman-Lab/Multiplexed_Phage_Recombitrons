@@ -1,6 +1,8 @@
 import fuzzysearch
 
 def extract_and_match(read,  L_inside, R_inside, wt_nt, edited_nt, fuzziness):
+    # import pdb
+    # pdb.set_trace()
     left_inside = fuzzysearch.find_near_matches(L_inside, read, max_l_dist=fuzziness)
     right_inside = fuzzysearch.find_near_matches(R_inside, read, max_l_dist=fuzziness)
     if len(left_inside) == 1 and len(right_inside) == 1:
