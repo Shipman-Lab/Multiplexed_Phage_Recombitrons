@@ -24,13 +24,13 @@ from edit_site_analysis_functions import extract_and_match
 
 ## CHANGE EVERYTHING (IF NEEDED) BETWEEN THE TWO HASHES
 # run path must currently point to the fastq generation folder: known bug
-run_path = "/Volumes/Shipman-Lab/BaseSpace/msMRM_04-376729312/FASTQ_Generation_2022-12-22_17_05_43Z-642084446"
-run_name = "msMRM_04"
+run_path = os.path.expanduser("~/Desktop/msCF_9-380984961/FASTQ_Generation_2023-02-07_17_01_14Z-652073444")
+run_name = "msCF-9"
 # this check is to get rid of the silent error where the script can't
 # find your files because the Hive isn't mounted
 # needs to be changed to the correct path if you're not on a Mac
-if not os.path.isdir("/Volumes/Shipman-Lab/BaseSpace"):
-    raise ValueError("Make sure to mount the Shipman-Lab hive drive")
+if not os.path.isdir(run_path):
+    raise ValueError("The run path is not a real directory")
 ## END CHANGE REGION
 
 # check git hash & that there are no uncommitted changes
