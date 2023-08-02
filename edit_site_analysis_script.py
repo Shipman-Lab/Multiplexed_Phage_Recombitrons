@@ -24,8 +24,8 @@ from edit_site_analysis_functions import extract_and_match
 
 ## CHANGE EVERYTHING (IF NEEDED) BETWEEN THE TWO HASHES
 # run path must currently point to the fastq generation folder: known bug
-run_path = os.path.expanduser("~/Desktop/msCF_9-380984961/FASTQ_Generation_2023-02-07_17_01_14Z-652073444")
-run_name = "msCF-9"
+run_path = os.path.expanduser("~/Desktop/msMRM_8-394461755/FASTQ_Generation_2023-08-01_17_42_39Z-685370687")
+run_name = "msMRM-8"
 # this check is to get rid of the silent error where the script can't
 # find your files because the Hive isn't mounted
 # needs to be changed to the correct path if you're not on a Mac
