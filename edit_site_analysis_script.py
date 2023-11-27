@@ -68,6 +68,9 @@ for root, dirs, files in os.walk(run_path):
         for name in files:
             if "fastq.gz" not in name:
                 continue
+            # we only want to look at the forward reads right now!
+            if "R1" not in name:
+                continue
             # match to file key
             for fastq_name in run_ids:
                 if fastq_name in name:
