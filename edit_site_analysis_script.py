@@ -24,7 +24,10 @@ from edit_site_analysis_functions import extract_and_match
 
 ## CHANGE EVERYTHING (IF NEEDED) BETWEEN THE TWO HASHES
 # run path must currently point to the fastq generation folder: known bug
-run_path = os.path.expanduser("~/Volumes/Shipman-Lab/BaseSpace/msDMP_01-705234547")
+# if the run path is on your Desktop
+# run_path = os.path.expanduser("~/Volumes/Shipman-Lab/BaseSpace/msDMP_01-705234547")
+# if the run path is on the hive
+run_path = "/Volumes/Shipman-Lab/BaseSpace/msDMP_01-705234547"
 run_name = "msDMP_01"
 # this check is to get rid of the silent error where the script can't
 # find your files because the Hive isn't mounted
