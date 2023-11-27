@@ -24,8 +24,8 @@ from edit_site_analysis_functions import extract_and_match
 
 ## CHANGE EVERYTHING (IF NEEDED) BETWEEN THE TWO HASHES
 # run path must currently point to the fastq generation folder: known bug
-run_path = os.path.expanduser("~/Desktop/msPRR_01-400485686/msPRR_01-698028342")
-run_name = "msPRR_01"
+run_path = os.path.expanduser("~/Volumes/Shipman-Lab/BaseSpace/msDMP_01-705234547")
+run_name = "msDMP_01"
 # this check is to get rid of the silent error where the script can't
 # find your files because the Hive isn't mounted
 # needs to be changed to the correct path if you're not on a Mac
@@ -43,13 +43,13 @@ git_short_hash = str(git_short_hash, "utf-8").strip()
 # load in file key
 # if you don't care about some of these, just leave them blank in the file key
 file_key = pd.read_excel("file_key.xlsx")\
-           [["phage", "gene", "plasmid", "direction",
+           [["phage", "strain", "gene", "plasmid", "direction",
            "edit_name", "genome_position", "wt_nt", 
            "edited_nt", "L_inside", "R_inside", 
            "L_outside", "R_outside",
            "rep_1", "rep_2", "rep_3",
            "rep_4", "rep_5"]]
-outcome_df = file_key.melt(id_vars=["phage", "gene", "plasmid", "direction",
+outcome_df = file_key.melt(id_vars=["phage", "strain", "gene", "plasmid", "direction",
                                     "edit_name", "genome_position", "wt_nt",
                                     "edited_nt", "L_inside", "R_inside", "L_outside", "R_outside"],
                            value_vars=["rep_1", "rep_2", "rep_3", "rep_4", "rep_5"])
