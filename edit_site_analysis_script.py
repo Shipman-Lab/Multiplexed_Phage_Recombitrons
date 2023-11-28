@@ -76,8 +76,6 @@ for root, dirs, files in os.walk(run_path):
                 if fastq_name in name:
                     print("working on %s" %fastq_name)
                     start_time = time.time()
-                    import pdb
-                    pdb.set_trace()
                     outcomes_dict = {'wt':0, 'edited':0, 'unmatched_region':0, 'unmatched_edit_nt':0}
                     all_reads_str = []
                     read_counter = []
@@ -96,6 +94,8 @@ for root, dirs, files in os.walk(run_path):
                             for record in SeqIO.parse(handle, "fastq"):
                                 all_reads_str.append(str(record.seq))
                             read_counter = Counter(all_reads_str)
+                            import pdb
+                            pdb.set_trace()
                             for read in read_counter:
                                 outcomes_dict[extract_and_match(read, L_outside, R_outside, L_inside,
                                                                 R_inside, wt_nt, edited_nt)] += read_counter[read]
