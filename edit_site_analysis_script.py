@@ -76,6 +76,8 @@ for root, dirs, files in os.walk(run_path):
                 if fastq_name in name:
                     print("working on %s" %fastq_name)
                     start_time = time.time()
+                    import pdb
+                    pdb.set_trace()
                     outcomes_dict = {'wt':0, 'edited':0, 'unmatched_region':0, 'unmatched_edit_nt':0}
                     all_reads_str = []
                     read_counter = []
