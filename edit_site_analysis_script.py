@@ -73,7 +73,9 @@ for root, dirs, files in os.walk(run_path):
                 continue
             # match to file key
             for fastq_name in run_ids:
-                if fastq_name in name:
+                decompose_name = name.split("_")
+                decompose_fastq_name = fastq_name.split("_")
+                if decompose_name[2] == decompose_fastq_name[2]:
                     print("working on %s" %fastq_name)
                     start_time = time.time()
                     outcomes_dict = {'wt':0, 'edited':0, 'unmatched_region':0, 'unmatched_edit_nt':0}
@@ -94,8 +96,6 @@ for root, dirs, files in os.walk(run_path):
                             for record in SeqIO.parse(handle, "fastq"):
                                 all_reads_str.append(str(record.seq))
                             read_counter = Counter(all_reads_str)
-                            import pdb
-                            pdb.set_trace()
                             for read in read_counter:
                                 outcomes_dict[extract_and_match(read, L_outside, R_outside, L_inside,
                                                                 R_inside, wt_nt, edited_nt)] += read_counter[read]
