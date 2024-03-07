@@ -27,14 +27,17 @@ if not os.path.isdir("/Volumes/Shipman-Lab/BaseSpace"):
 
 # load in file key
 # if you don't care about some of these, just leave them blank in the file key
-file_key = pd.read_excel("file_key.xlsx")\
+## CHANGE HERE
+file_key = pd.read_excel("Edit_site_analysis_M13_219_224_key.xls.xlsx")\
            [["phage", "gene", "plasmid", "direction",
            "edit_name", "genome_position", "wt_nt", 
            "edited_nt", "L_inside", "R_inside", 
            "L_outside", "R_outside",
            "rep_1", "rep_2", "rep_3",
            "rep_4", "rep_5"]]
-run_path = "/Volumes/Shipman-Lab/BaseSpace/msKDC_01-353873095/FASTQ_Generation_2022-06-04_18_18_55Z-570470901"
+
+## CHANGE HERE
+run_path = "/Volumes/Shipman-Lab/BaseSpace/msKDC_08-411201226/FASTQ_Generation_2024-02-29_17_19_43Z-721293580"
 outcome_df = file_key.melt(id_vars=["phage", "gene", "plasmid", "direction",
                                     "edit_name", "genome_position", "wt_nt",
                                     "edited_nt", "L_inside", "R_inside", "L_outside", "R_outside"],
