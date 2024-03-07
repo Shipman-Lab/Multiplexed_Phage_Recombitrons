@@ -28,7 +28,7 @@ if not os.path.isdir("/Volumes/Shipman-Lab/BaseSpace"):
 # load in file key
 # if you don't care about some of these, just leave them blank in the file key
 ## CHANGE HERE
-file_key = pd.read_excel("Edit_site_analysis_M13_219_224_key.xls.xlsx")\
+file_key = pd.read_excel("Edit_site_analysis_M13_219_224_key.xls")\
            [["phage", "gene", "plasmid", "direction",
            "edit_name", "genome_position", "wt_nt", 
            "edited_nt", "L_inside", "R_inside", 
