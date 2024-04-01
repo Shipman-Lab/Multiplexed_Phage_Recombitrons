@@ -65,7 +65,7 @@ for fastq_name in run_ids:
     L_inside = outcome_df.loc[outcome_df["run_id"] == fastq_name, "L_inside"].values[0]
     R_inside = outcome_df.loc[outcome_df["run_id"] == fastq_name, "R_inside"].values[0]
     wt_nt = outcome_df.loc[outcome_df["run_id"] == fastq_name, "wt_nt"].values[0]
-    edited_nt = outcome_df.loc[outcome_df["run_id"] == fastq_name, "edited_nt"].values[0]
+    edited_nt = outcome_df.loc[outcome_df["run_id"] == fastq_name, "edit_nt"].values[0]
     # need to go into the folder & unzip the file
     with gzip.open(filepath, "rt") as handle:
         for seq_record in SeqIO.parse(handle, "fastq"): 
