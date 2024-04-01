@@ -1,4 +1,5 @@
 import fuzzysearch
+import os
 
 def extract_and_match(read, L_outside, R_outside, L_inside, R_inside, wt_nt, edited_nt):
     left_outside = fuzzysearch.find_near_matches(L_outside, read, max_l_dist=2)
