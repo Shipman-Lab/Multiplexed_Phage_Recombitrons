@@ -46,7 +46,7 @@ git_short_hash = str(git_short_hash, "utf-8").strip()
 # load in file key
 # if you don't care about some of these, just leave them blank in the file key
 file_key = pd.read_excel("file_key.xlsx")\
-           [["file_name", "info", "plasmid", "wt_nt", "edit_nt",
+           [["run_id", "info", "plasmid", "wt_nt", "edit_nt",
              "L_inside", "R_inside", "L_outside", "R_outside"]]
 outcome_df = file_key.copy()
 # assumes you have 9 or fewer replicates per type!!!
