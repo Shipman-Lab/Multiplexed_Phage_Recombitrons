@@ -18,3 +18,12 @@ def extract_and_match(read, L_outside, R_outside, L_inside, R_inside, wt_nt, edi
             return 'unmatched_region'
     else:
         return 'unmatched_region'
+
+def find_file(file_name, run):
+    miseq_folder_names = os.listdir('/Volumes/Shipman-Lab/BaseSpace')
+    miseq_folder_dict = {}
+    for folder in miseq_folder_names:
+        miseq_folder_dict[folder.split('-')[0]] = folder
+    file_folder = '/Volumes/Shipman-Lab/BaseSpace/%s' % (miseq_folder_dict[run])
+    for file in Path(file_folder).rglob(file_name + "*.fastq.gz"):
+        return file
