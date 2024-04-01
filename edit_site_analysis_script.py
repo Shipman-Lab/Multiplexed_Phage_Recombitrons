@@ -18,9 +18,8 @@ import subprocess
 import gzip
 import shutil
 import time
-import os
+import os as os
 import numpy as np
-from settings import PROJECT_ROOT
 from edit_site_analysis_functions import extract_and_match, find_file
 
 ## CHANGE EVERYTHING (IF NEEDED) BETWEEN THE TWO HASHES
