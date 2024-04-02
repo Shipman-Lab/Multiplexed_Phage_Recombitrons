@@ -28,7 +28,7 @@ from edit_site_analysis_functions import extract_and_match, find_file
 # run_path = os.path.expanduser("~/Volumes/Shipman-Lab/BaseSpace/msDMP_01-705234547")
 # if the run path is on the hive
 run_path = "/Volumes/Shipman-Lab/BaseSpace/"
-run_name = "msAGK_18"
+run_name = "msAGK_19"
 # this check is to get rid of the silent error where the script can't
 # find your files because the Hive isn't mounted
 # needs to be changed to the correct path if you're not on a Mac
