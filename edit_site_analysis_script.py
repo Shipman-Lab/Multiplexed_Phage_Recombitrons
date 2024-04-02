@@ -72,8 +72,12 @@ for fastq_name in run_ids:
             all_reads_str.append(str(seq_record.seq))
         read_counter = Counter(all_reads_str)
         for read in read_counter:
-            outcomes_dict[extract_and_match(read, L_outside, R_outside, L_inside,
-                                            R_inside, wt_nt, edited_nt)] += read_counter[read]
+            read_result = extract_and_match(read, L_outside, R_outside, L_inside,
+                                            R_inside, wt_nt, edited_nt)
+            if read_result == "None":
+                import pdb
+                pdb.set_trace()
+            outcomes_dict[read_result] += read_counter[read]
     # put into output df
     index = outcome_df.index[outcome_df["run_id"] == fastq_name]
     if len(index) != 1:
