@@ -22,6 +22,7 @@ def extract_and_match(read, L_outside, R_outside, L_inside, R_inside, wt_nt, edi
                             return 'edited'
                         else:
                             return 'unmatched_edit_nt'
+            return 'unmatched_edit_nt'
         else:
             return 'unmatched_region'
     else:
