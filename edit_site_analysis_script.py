@@ -77,6 +77,8 @@ for fastq_name in run_ids:
             if read_result is None:
                 import pdb
                 pdb.set_trace()
+                read_result = extract_and_match(read, L_outside, R_outside, L_inside,
+                                                R_inside, wt_nt, edited_nt)
             outcomes_dict[read_result] += read_counter[read]
     # put into output df
     index = outcome_df.index[outcome_df["run_id"] == fastq_name]
