@@ -74,7 +74,7 @@ for fastq_name in run_ids:
         for read in read_counter:
             read_result = extract_and_match(read, L_outside, R_outside, L_inside,
                                             R_inside, wt_nt, edited_nt)
-            if read_result == "None":
+            if read_result is None:
                 import pdb
                 pdb.set_trace()
             outcomes_dict[read_result] += read_counter[read]
