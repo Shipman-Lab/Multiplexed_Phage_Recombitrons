@@ -34,5 +34,6 @@ def find_file(file_name, run, basespace_folder):
     for folder in miseq_folder_names:
         miseq_folder_dict[folder.split('-')[0]] = folder
     file_folder = basespace_folder + '%s' % (miseq_folder_dict[run])
+    print(file_folder)
     for file in Path(file_folder).rglob(file_name + "*.fastq.gz"):
         return file
