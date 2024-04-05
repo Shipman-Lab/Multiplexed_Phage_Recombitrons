@@ -54,7 +54,7 @@ outcome_df[["wt", "edited", "unmatched_region", "unmatched_edit_nt"]] = np.NaN
 run_ids = outcome_df["run_id"].dropna()
 
 for fastq_name in run_ids:
-    filepath = find_file(fastq_name, run_name)
+    filepath = find_file(fastq_name, run_name, run_path)
     print("working on %s" %fastq_name)
     start_time = time.time()
     outcomes_dict = {'wt':0, 'edited':0, 'unmatched_region':0, 'unmatched_edit_nt':0}
